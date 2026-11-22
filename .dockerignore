@@ -1,0 +1,29 @@
+# Secrets never go into the image: compose passes .env in at run time.
+.env
+.env.*
+!.env.example
+
+# Installed inside the image instead
+node_modules/
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+
+# Local state and run output
+.git/
+fyp_threads.db*
+logs/
+runs/*/
+.lint_tmp/
+static/preview/preview_*
+!static/preview/preview_demo-*
+static/preview/screenshot_*
+static/preview/tests_*
+
+# Development-only material (not published, see .gitignore)
+fyp.ipynb
+.claude/
+baseline/
+docs/
+HANDOFF.md

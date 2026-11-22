@@ -1,0 +1,527 @@
+
+        :root {
+            --frame-w: 1440px;
+            --frame-h: 900px;
+            --frame-scale: 0.24;
+            --preview-bg: #080808;
+            --preview-panel: #101010;
+            --preview-border: rgba(255,255,255,.12);
+            --preview-text: #f4f4f5;
+            --preview-muted: #8a8a8f;
+        }
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            background: #080808;
+            color: var(--preview-text);
+            font-family: Inter, system-ui, sans-serif;
+            overflow: hidden;
+        }
+        .preview-lab {
+            height: 100vh;
+            display: grid;
+            grid-template-rows: minmax(0, 1fr) auto;
+            background:
+                linear-gradient(90deg, rgba(255,255,255,.026) 1px, transparent 1px),
+                linear-gradient(180deg, rgba(255,255,255,.026) 1px, transparent 1px),
+                var(--preview-bg);
+            background-size: 32px 32px;
+        }
+        .canvas {
+            min-height: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 18px 14px;
+            overflow-x: hidden;
+            overflow-y: hidden;
+        }
+        .canvas.is-tall {
+            align-items: flex-start;
+        }
+        .device-shell {
+            position: relative;
+            width: 612px;
+            height: 383px;
+            flex: 0 0 auto;
+            transition: width .28s ease, height .28s ease;
+        }
+        .device {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: var(--outer-w, var(--frame-w));
+            height: var(--outer-h, var(--frame-h));
+            transform: scale(var(--frame-scale));
+            transform-origin: top left;
+            border: 1px solid rgba(255,255,255,.24);
+            border-radius: 12px;
+            background: #fff;
+            overflow: hidden;
+            box-shadow: 0 18px 60px rgba(0,0,0,.38);
+            transition: width .28s ease, height .28s ease, transform .28s ease,
+                        border-radius .28s ease;
+        }
+        .device.device-ios,
+        .device.device-android,
+        .device.device-tablet {
+            background: #050505;
+            border-color: rgba(255,255,255,.32);
+            box-shadow:
+                inset 0 0 0 1px rgba(255,255,255,.18),
+                inset 0 0 18px rgba(255,255,255,.08),
+                0 0 0 1px rgba(255,255,255,.08),
+                0 0 24px rgba(255,255,255,.08),
+                0 18px 60px rgba(0,0,0,.42);
+        }
+        .device.device-ios { border-radius: 38px; }
+        .device.device-android { border-radius: 34px; }
+        .device.device-tablet { border-radius: 28px; }
+        .device.device-compact { border-radius: 34px; }
+        .device.device-ios::before {
+            content: "";
+            position: absolute;
+            z-index: 2;
+            top: 10px;
+            left: 50%;
+            width: 88px;
+            height: 25px;
+            transform: translateX(-50%);
+            border-radius: 999px;
+            background: #050505;
+            box-shadow:
+                0 0 0 1px rgba(255,255,255,.12),
+                0 0 14px rgba(255,255,255,.08);
+        }
+        .device.device-compact::before {
+            width: 74px;
+            height: 22px;
+        }
+        .device.device-android::before {
+            content: "";
+            position: absolute;
+            z-index: 2;
+            top: 12px;
+            left: 50%;
+            width: 10px;
+            height: 10px;
+            transform: translateX(-50%);
+            border-radius: 999px;
+            background: #050505;
+            box-shadow:
+                0 0 0 1px rgba(255,255,255,.12),
+                0 0 0 3px rgba(255,255,255,.04);
+        }
+        iframe {
+            position: absolute;
+            left: var(--chrome-x, 0px);
+            top: var(--chrome-top, 0px);
+            width: var(--frame-w);
+            height: var(--frame-h);
+            border: 0;
+            display: block;
+            background: #fff;
+        }
+        .device.device-ios iframe { border-radius: 28px; }
+        .device.device-android iframe { border-radius: 25px; }
+        .device.device-tablet iframe { border-radius: 20px; }
+        @keyframes wf-bar-in {
+            from { opacity: 0; transform: translateY(14px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes wf-bar-out {
+            to { opacity: 0; transform: translateY(14px); }
+        }
+        /* Exit: added by the parent click handler the instant Select is clicked,
+           so the toolbar slides back down before the rerun swaps the iframe. */
+        .bar.wf-exiting {
+            animation: wf-bar-out 0.24s cubic-bezier(0.4, 0, 1, 1) forwards !important;
+        }
+        .bar {
+            min-height: 48px;
+            padding: 8px 10px 10px;
+            border-top: 1px solid var(--preview-border);
+            background: var(--preview-panel);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            overflow: hidden;
+            /* No entrance animation. The iframe loads while the panel is still
+               off-screen (closed), so Chrome does not advance the iframe's
+               animation timeline; a `both`-fill wf-bar-in then stranded the bar
+               at its FROM frame (opacity 0, translateY 14px), which pushed the
+               toolbar 14px down out of the iframe and hid/clipped it. Without the
+               animation the bar always sits at its correct, fully-visible spot. */
+        }
+        .meta {
+            min-width: 0;
+            color: var(--preview-muted);
+            font-size: 11px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .controls {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            flex: 0 0 auto;
+        }
+        .phone-picker {
+            display: inline-flex;
+            align-items: center;
+            gap: 0;
+            padding: 0;
+            border-radius: 999px;
+            background: transparent;
+            box-shadow: none;
+            transition: padding .22s ease, gap .22s ease, background .22s ease,
+                        box-shadow .22s ease;
+        }
+        .phone-picker.open {
+            gap: 4px;
+            padding: 3px 4px 3px 3px;
+            background:
+                linear-gradient(90deg, rgba(255,255,255,.065), rgba(255,255,255,.018));
+            box-shadow: inset 0 0 0 1px rgba(255,255,255,.06);
+        }
+        .phone-picker #phoneMenuButton {
+            transition: width .22s ease, height .22s ease, background .15s ease,
+                        border-color .15s ease, color .15s ease;
+        }
+        .phone-picker.open #phoneMenuButton {
+            width: 24px;
+            height: 24px;
+            border-radius: 999px;
+            background: rgba(255,255,255,.045);
+            border-color: rgba(255,255,255,.08);
+        }
+        .phone-options {
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+            padding: 0;
+            border: 1px solid transparent;
+            border-radius: 999px;
+            background: transparent;
+            max-width: 0;
+            opacity: 0;
+            transform: translateX(-5px) scale(.96);
+            pointer-events: none;
+            overflow: hidden;
+            transition: max-width .24s ease, opacity .18s ease, transform .24s ease;
+        }
+        .phone-picker.open .phone-options {
+            max-width: 126px;
+            opacity: 1;
+            transform: translateX(0) scale(1);
+            pointer-events: auto;
+        }
+        @media (max-width: 360px) {
+            .preview-lab {
+                grid-template-rows: minmax(0, 1fr) auto;
+            }
+            .bar {
+                min-height: 78px;
+                align-content: center;
+                flex-wrap: wrap;
+                justify-content: center;
+                padding: 8px 8px 10px;
+            }
+            .meta {
+                width: 100%;
+                text-align: center;
+            }
+            .controls {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+        button {
+            width: 30px;
+            height: 30px;
+            border: 1px solid transparent;
+            border-radius: 8px;
+            background: transparent;
+            color: var(--preview-muted);
+            cursor: pointer;
+            display: inline-grid;
+            place-items: center;
+            transition: background .15s ease, color .15s ease, border-color .15s ease;
+        }
+        button:hover,
+        button.active {
+            background: #1a1a1a;
+            color: var(--preview-text);
+            border-color: rgba(255,255,255,.20);
+        }
+        .phone-options button {
+            width: 20px;
+            height: 24px;
+            border-radius: 999px;
+        }
+        .phone-options button:hover,
+        .phone-options button.active {
+            background: rgba(255,255,255,.10);
+            border-color: rgba(255,255,255,.18);
+        }
+        .ico {
+            position: relative;
+            display: block;
+            border: 2px solid currentColor;
+            opacity: .92;
+        }
+        .ico.fit { width: 16px; height: 16px; border-radius: 4px; }
+        .ico.desktop { width: 18px; height: 13px; border-radius: 3px; }
+        .ico.desktop::after {
+            content: "";
+            position: absolute;
+            left: 5px;
+            right: 5px;
+            bottom: -6px;
+            height: 2px;
+            background: currentColor;
+            border-radius: 99px;
+        }
+        .ico.wide { width: 19px; height: 11px; border-radius: 3px; }
+        .ico.tablet { width: 14px; height: 18px; border-radius: 4px; }
+        .ico.phone { width: 10px; height: 19px; border-radius: 5px; transition: transform .2s ease; }
+        .phone-picker.open .ico.phone { transform: rotate(90deg); }
+        .ico.phone-option { width: 8px; height: 15px; border-radius: 5px; border-width: 1.5px; }
+        .ico.phone-option::before {
+            content: "";
+            position: absolute;
+            left: 50%;
+            top: 3px;
+            width: 3px;
+            height: 3px;
+            transform: translateX(-50%);
+            border-radius: 99px;
+            background: currentColor;
+        }
+        .ico.phone-option.ios::before {
+            width: 6px;
+            height: 2px;
+        }
+        /* Component highlight (H1): a bold orange ring + orange glow + tint, so
+           it reads clearly over a light page. The old white ring was invisible
+           on cream/white backgrounds. */
+        .select-overlay {
+            position: fixed;
+            z-index: 40;
+            pointer-events: none;
+            opacity: 0;
+            border: 2px solid #e08036;
+            border-radius: 7px;
+            background: rgba(224,128,54,.10);
+            box-shadow:
+                0 0 0 5px rgba(224,128,54,.18),
+                0 0 26px rgba(224,128,54,.30);
+            transition: opacity .12s ease, left .08s ease, top .08s ease,
+                        width .08s ease, height .08s ease;
+        }
+        .select-overlay.selected {
+            z-index: 42;
+            opacity: 1;
+            border-color: #f0954a;
+            background: rgba(224,128,54,.16);
+            box-shadow:
+                0 0 0 5px rgba(224,128,54,.30),
+                0 0 32px rgba(224,128,54,.42);
+        }
+        .select-tooltip {
+            position: fixed;
+            z-index: 45;
+            max-width: 260px;
+            padding: 7px 9px;
+            border: 1px solid rgba(255,255,255,.14);
+            border-radius: 9px;
+            background: rgba(16,16,16,.96);
+            color: var(--preview-text);
+            box-shadow: 0 14px 36px rgba(0,0,0,.42);
+            font: 500 11px/1.35 Inter, system-ui, sans-serif;
+            pointer-events: none;
+            opacity: 0;
+            transform: translateY(3px);
+            transition: opacity .12s ease, transform .12s ease;
+        }
+        .select-tooltip.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .select-tooltip strong {
+            display: block;
+            margin-bottom: 3px;
+            color: #fff;
+            font-size: 12px;
+        }
+        .select-tooltip code {
+            color: var(--preview-muted);
+            font-family: Inter, system-ui, sans-serif;
+            white-space: normal;
+        }
+        .select-pocket {
+            position: fixed;
+            z-index: 50;
+            width: min(288px, calc(100vw - 24px));
+            padding: 12px;
+            border: 1px solid rgba(255,255,255,.14);
+            border-radius: 13px;
+            background: rgba(15,15,15,.985);
+            color: var(--preview-text);
+            box-shadow:
+                0 20px 52px rgba(0,0,0,.55),
+                0 2px 8px rgba(0,0,0,.4),
+                inset 0 0 0 1px rgba(255,255,255,.045);
+            opacity: 0;
+            transform: translateY(4px) scale(.98);
+            transform-origin: var(--pocket-origin, 20px 0);
+            pointer-events: none;
+            transition: opacity .14s ease,
+                        transform .16s cubic-bezier(.2,.7,.2,1),
+                        left .12s ease, top .12s ease;
+        }
+        .select-pocket.visible {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            pointer-events: auto;
+        }
+        .select-pocket::before {
+            content: "";
+            position: absolute;
+            top: -5px;
+            left: var(--pocket-caret-x, 20px);
+            width: 9px;
+            height: 9px;
+            transform: rotate(45deg);
+            border-left: 1px solid rgba(255,255,255,.14);
+            border-top: 1px solid rgba(255,255,255,.14);
+            background: rgba(15,15,15,.985);
+        }
+        .select-pocket.is-above::before {
+            top: auto;
+            bottom: -5px;
+            border-left: none;
+            border-top: none;
+            border-right: 1px solid rgba(255,255,255,.14);
+            border-bottom: 1px solid rgba(255,255,255,.14);
+        }
+        .select-pocket.is-side::before {
+            display: none;
+        }
+        .select-pocket-header {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            align-items: start;
+            margin-bottom: 9px;
+        }
+        .select-pocket-title {
+            min-width: 0;
+        }
+        .select-pocket-kicker {
+            display: block;
+            margin-bottom: 5px;
+            color: var(--preview-muted);
+            font: 700 9.5px/1 Inter, system-ui, sans-serif;
+            letter-spacing: .10em;
+            text-transform: uppercase;
+        }
+        .select-pocket-title strong {
+            display: block;
+            color: #fff;
+            font: 700 13px/1.2 Inter, system-ui, sans-serif;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .select-pocket-selector {
+            display: inline-block;
+            max-width: 100%;
+            margin-top: 6px;
+            padding: 2px 8px;
+            border-radius: 999px;
+            background: rgba(255,255,255,.055);
+            border: 1px solid rgba(255,255,255,.10);
+            color: var(--preview-muted);
+            font: 500 10.5px/1.35 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            vertical-align: top;
+        }
+        .select-pocket-close {
+            width: 22px;
+            height: 22px;
+            border-radius: 7px;
+            flex: 0 0 auto;
+            color: var(--preview-muted);
+        }
+        .select-pocket-close:hover {
+            background: rgba(255,255,255,.08);
+            color: var(--preview-text);
+        }
+        .select-pocket textarea {
+            width: 100%;
+            min-height: 74px;
+            resize: vertical;
+            border: 1px solid rgba(255,255,255,.12);
+            border-radius: 10px;
+            outline: none;
+            background: #0b0b0b;
+            color: var(--preview-text);
+            padding: 9px 10px;
+            font: 500 12px/1.45 Inter, system-ui, sans-serif;
+        }
+        .select-pocket textarea::placeholder {
+            color: rgba(255,255,255,.32);
+        }
+        .select-pocket textarea:focus {
+            border-color: rgba(255,255,255,.34);
+            box-shadow: 0 0 0 3px rgba(255,255,255,.07);
+        }
+        .select-pocket-actions {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            margin-top: 9px;
+        }
+        .select-pocket-hint {
+            color: var(--preview-muted);
+            font: 500 10.5px/1 Inter, system-ui, sans-serif;
+            white-space: nowrap;
+        }
+        .select-pocket-hint kbd {
+            font: 600 10px ui-monospace, Menlo, Consolas, monospace;
+            color: var(--preview-text);
+            background: rgba(255,255,255,.07);
+            border: 1px solid rgba(255,255,255,.10);
+            border-radius: 4px;
+            padding: 1px 4px;
+        }
+        .select-pocket-submit {
+            width: auto;
+            min-width: 74px;
+            height: 30px;
+            padding: 0 13px;
+            border-radius: 9px;
+            background: #ededed;
+            border-color: rgba(255,255,255,.58);
+            color: #050505;
+            font-weight: 700;
+        }
+        .select-pocket-submit:hover {
+            background: #fff;
+            color: #050505;
+            border-color: rgba(255,255,255,.7);
+        }
+        .select-pocket-submit:active {
+            transform: translateY(1px);
+        }
+        .select-pocket-submit:disabled {
+            opacity: .45;
+            cursor: default;
+        }
+        

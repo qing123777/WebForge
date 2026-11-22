@@ -1,0 +1,1745 @@
+
+    @import url("https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@700;800&family=IBM+Plex+Mono:wght@400;500&display=swap");
+    @import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap");
+
+    :root, html.dark {
+        --bg-app:        #050505;
+        --bg-main:       #090909;
+        --bg-panel:      #0d0d0d;
+        --bg-card:       #141414;
+        --bg-card-hi:    #1d1d1d;
+        --bg-input:      #111111;
+        --text-primary:  #f4f4f5;
+        --text-secondary:#d4d4d8;
+        --text-muted:    #8a8a8f;
+        --accent:        #e5e5e5;
+        --accent-hi:     #ffffff;
+        --border:        rgba(255, 255, 255, 0.11);
+        --border-hi:     rgba(255, 255, 255, 0.22);
+        --user-bubble:   #222222;
+        --user-text:     #f4f4f5;
+        --assistant-bubble: #151515;
+    }
+
+    html {
+        --uigpt-sidebar-w-expanded: 260px;
+        --uigpt-sidebar-w-collapsed: 64px;
+        --uigpt-sidebar-w: var(--uigpt-sidebar-w-expanded);
+        --webforge-preview-panel-w: 420px;
+        --webforge-preview-gap: 0px;
+    }
+    html.sidebar-collapsed {
+        --uigpt-sidebar-w: var(--uigpt-sidebar-w-collapsed);
+    }
+    body:has(#uigpt-sidebar-toggle-input:not(:checked)) {
+        --uigpt-sidebar-w: var(--uigpt-sidebar-w-collapsed);
+    }
+    body:has(#uigpt-sidebar-toggle-input:checked) {
+        --uigpt-sidebar-w: var(--uigpt-sidebar-w-expanded);
+    }
+    body:has(#webforge-preview-toggle-input:checked) {
+        --webforge-preview-gap: var(--webforge-preview-panel-w);
+    }
+    html.webforge-resizing,
+    html.webforge-resizing * {
+        cursor: col-resize !important;
+        user-select: none !important;
+    }
+    html.webforge-resizing [data-testid="stAppViewContainer"],
+    html.webforge-resizing [data-testid="stMain"],
+    html.webforge-resizing div[data-testid="stBottom"],
+    html.webforge-resizing section[data-testid="stSidebar"],
+    html.webforge-resizing .uigpt-sidebar-toggle,
+    html.webforge-resizing .webforge-preview-toggle,
+    html.webforge-resizing .st-key-webforge_preview_panel {
+        transition: none !important;
+    }
+
+    html, body, .stApp {
+        background: var(--bg-app) !important;
+        color: var(--text-primary) !important;
+        font-family: "Manrope", sans-serif !important;
+    }
+    [data-testid="stAppViewContainer"] {
+        background: var(--bg-main) !important;
+        color: var(--text-primary) !important;
+        font-family: "Manrope", sans-serif !important;
+        display: grid !important;
+        grid-template-columns:
+            var(--uigpt-sidebar-w)
+            minmax(0, 1fr)
+            var(--webforge-preview-gap) !important;
+        transition: grid-template-columns 0.25s ease !important;
+    }
+    [data-testid="stMain"],
+    [data-testid="stMainBlockContainer"] {
+        background: var(--bg-main) !important;
+        color: var(--text-primary) !important;
+        font-family: "Manrope", sans-serif !important;
+    }
+    [data-testid="stMain"] {
+        grid-column: 2 !important;
+        width: calc(100vw - var(--uigpt-sidebar-w) - var(--webforge-preview-gap)) !important;
+        min-width: 0 !important;
+        margin-left: 0 !important;
+        transition: width 0.25s ease !important;
+    }
+
+    div[data-testid="stToolbar"],
+    div[data-testid="stDecoration"],
+    #MainMenu,
+    footer { display: none !important; }
+    header[data-testid="stHeader"] {
+        background: var(--bg-main) !important;
+        height: auto !important;
+        z-index: 1000 !important;
+    }
+
+    /* The sidebar's z-index must be defined and LOW enough that our
+       fixed toggle button can paint on top of it. Streamlit's default
+       can be in the hundreds-of-thousands range, which is why the
+       button used to disappear behind the sidebar. We pin it to 100
+       and ensure the toggle uses a much higher z-index below. */
+    section[data-testid="stSidebar"] {
+        position: relative !important;
+        display: block !important;
+        visibility: visible !important;
+        transform: none !important;
+        width: var(--uigpt-sidebar-w) !important;
+        min-width: var(--uigpt-sidebar-w) !important;
+        max-width: var(--uigpt-sidebar-w) !important;
+        flex: 0 0 var(--uigpt-sidebar-w) !important;
+        background: var(--bg-panel) !important;
+        border-right: 1px solid var(--border) !important;
+        /* Slimmer shadow so it doesn't visually swallow the toggle. */
+        box-shadow: 2px 0 6px rgba(0, 0, 0, 0.12) !important;
+        transition: width 0.25s ease, min-width 0.25s ease,
+                    max-width 0.25s ease, flex-basis 0.25s ease !important;
+        overflow: hidden !important;
+        text-align: left !important;
+        z-index: 100 !important;
+        grid-column: 1 !important;
+        grid-row: 1 !important;
+    }
+    /* Newer Streamlit ships nested content containers
+       (stSidebarContent, stSidebarUserContent). Without these
+       overrides the inner div keeps its default 280px width and the
+       outer section can't actually shrink. */
+    section[data-testid="stSidebar"] > div,
+    section[data-testid="stSidebar"] [data-testid="stSidebarContent"],
+    section[data-testid="stSidebar"] [data-testid="stSidebarUserContent"] {
+        background: var(--bg-panel) !important;
+        width: 100% !important;
+        min-width: 0 !important;
+        max-width: 100% !important;
+    }
+    section[data-testid="stSidebar"] [data-testid="stSidebarUserContent"] {
+        padding-top: 0 !important;
+        margin-top: -16px !important;
+    }
+
+    [data-testid="stSidebarCollapseButton"],
+    [data-testid="stSidebarCollapsedControl"] {
+        display: none !important;
+    }
+
+    section[data-testid="stSidebar"] p,
+    section[data-testid="stSidebar"] span,
+    section[data-testid="stSidebar"] label,
+    section[data-testid="stSidebar"] li,
+    section[data-testid="stSidebar"] div[data-testid="stMarkdownContainer"] {
+        color: var(--text-secondary) !important;
+        font-family: "Inter", "Manrope", sans-serif !important;
+        text-align: left !important;
+    }
+    section[data-testid="stSidebar"] [data-testid="stIconMaterial"] {
+        font-family: "Material Symbols Outlined" !important;
+        font-size: 20px !important;
+        line-height: 1 !important;
+        font-variation-settings: 'FILL' 0, 'wght' 500, 'GRAD' 0, 'opsz' 24;
+    }
+    section[data-testid="stSidebar"] .stButton > button {
+        background: var(--bg-card) !important;
+        color: var(--text-secondary) !important;
+        border: 1px solid var(--border) !important;
+        border-radius: 10px !important;
+        text-align: left !important;
+        font-family: "Inter", "Manrope", sans-serif !important;
+        font-weight: 500 !important;
+        padding: 0.55rem 0.8rem !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        transition: all 0.18s ease !important;
+    }
+    section[data-testid="stSidebar"] .stButton > button > div,
+    section[data-testid="stSidebar"] .stButton > button span[data-has-shortcut="false"],
+    section[data-testid="stSidebar"] .stButton > button [data-testid="stMarkdownContainer"] {
+        text-align: left !important;
+    }
+    section[data-testid="stSidebar"] .stButton > button:not(:has([data-testid="stIconMaterial"])) {
+        border-color: var(--bg-card) !important;
+    }
+    section[data-testid="stSidebar"] .stButton > button:not(:has([data-testid="stIconMaterial"])) > div,
+    section[data-testid="stSidebar"] .stButton > button:not(:has([data-testid="stIconMaterial"])) span[data-has-shortcut="false"] {
+        width: 100% !important;
+        display: flex !important;
+        justify-content: flex-start !important;
+        text-align: left !important;
+    }
+    section[data-testid="stSidebar"] .stButton > button:not(:has([data-testid="stIconMaterial"])) [data-testid="stMarkdownContainer"] {
+        text-align: left !important;
+    }
+    section[data-testid="stSidebar"] .stButton {
+        margin: 0 0 10px !important;
+    }
+    html.uigpt-stream-locked section[data-testid="stSidebar"] .stButton > button:has([data-testid="stIconMaterial"]) {
+        pointer-events: auto !important;
+        cursor: pointer !important;
+        opacity: 1 !important;
+    }
+    section[data-testid="stSidebar"] .stButton > button:has([data-testid="stIconMaterial"]) {
+        background: transparent !important;
+        color: var(--text-secondary) !important;
+        border-color: transparent !important;
+        box-shadow: none !important;
+    }
+    section[data-testid="stSidebar"] .stButton > button:has([data-testid="stIconMaterial"]) > div {
+        display: flex !important;
+        align-items: center !important;
+        gap: 0.55rem !important;
+    }
+    section[data-testid="stSidebar"] .stButton > button:has([data-testid="stIconMaterial"]) [data-testid="stMarkdownContainer"] {
+        min-width: 0 !important;
+        flex: 1 1 auto !important;
+        overflow: hidden !important;
+        color: #64748b !important;
+        font-family: "Manrope", sans-serif !important;
+        font-size: 14px !important;
+        font-weight: 500 !important;
+        line-height: 20px !important;
+    }
+    section[data-testid="stSidebar"] .stButton > button:has([data-testid="stIconMaterial"]) [data-testid="stMarkdownContainer"] p {
+        margin: 0 !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        white-space: nowrap !important;
+        color: inherit !important;
+        font: inherit !important;
+        line-height: inherit !important;
+    }
+    section[data-testid="stSidebar"] .stButton > button:hover {
+        background: var(--bg-card-hi) !important;
+        border-color: var(--border-hi) !important;
+        color: var(--accent-hi) !important;
+    }
+    section[data-testid="stSidebar"] .stButton > button:has([data-testid="stIconMaterial"]):hover {
+        background: rgba(255, 255, 255, 0.05) !important;
+        color: var(--text-primary) !important;
+        border-color: transparent !important;
+        box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08),
+                    0 0 0 3px rgba(255, 255, 255, 0.08) !important;
+    }
+    section[data-testid="stSidebar"] .stButton > button:has([data-testid="stIconMaterial"]):hover [data-testid="stMarkdownContainer"],
+    section[data-testid="stSidebar"] .stButton > button[kind="primary"]:has([data-testid="stIconMaterial"]):hover [data-testid="stMarkdownContainer"] {
+        color: var(--text-primary) !important;
+    }
+    section[data-testid="stSidebar"] .stButton > button[kind="primary"] {
+        background: var(--bg-card-hi) !important;
+        color: var(--accent-hi) !important;
+        border-color: var(--border-hi) !important;
+    }
+    /* Active thread (D2 option A): orange-tinted row with a left orange bar, so
+       the current chat is clearly the selected one. */
+    section[data-testid="stSidebar"] .stButton > button[kind="primary"]:has([data-testid="stIconMaterial"]) {
+        background: rgba(224, 128, 54, 0.12) !important;
+        color: var(--text-primary) !important;
+        border-color: transparent !important;
+        box-shadow: inset 2px 0 0 #e08036 !important;
+    }
+    section[data-testid="stSidebar"] .stButton > button[kind="primary"]:has([data-testid="stIconMaterial"]) [data-testid="stMarkdownContainer"] {
+        color: var(--text-primary) !important;
+    }
+    section[data-testid="stSidebar"] .stButton > button[kind="primary"]:has([data-testid="stIconMaterial"]):hover {
+        background: rgba(224, 128, 54, 0.18) !important;
+        color: var(--text-primary) !important;
+        border-color: transparent !important;
+        box-shadow: inset 2px 0 0 #e08036 !important;
+    }
+
+    /* New Chat = ghost row (D2 option A): transparent, thin border, left-aligned
+       label with an orange "+" drawn as ::before. Lighter than the old white
+       chip so it stops dominating the rail. */
+    section[data-testid="stSidebar"] .st-key-btn_new_chat .stButton > button {
+        background: transparent !important;
+        color: var(--text-primary) !important;
+        border: 1px solid var(--border) !important;
+        border-radius: 10px !important;
+        font-weight: 600 !important;
+        box-shadow: none !important;
+        justify-content: flex-start !important;
+        transition: background 0.15s ease, border-color 0.15s ease !important;
+    }
+    section[data-testid="stSidebar"] .st-key-btn_new_chat .stButton > button > div,
+    section[data-testid="stSidebar"] .st-key-btn_new_chat .stButton > button [data-testid="stMarkdownContainer"] {
+        justify-content: flex-start !important;
+        color: var(--text-primary) !important;
+    }
+    section[data-testid="stSidebar"] .st-key-btn_new_chat .stButton > button p {
+        color: var(--text-primary) !important;
+    }
+    section[data-testid="stSidebar"] .st-key-btn_new_chat .stButton > button p::before {
+        content: "+";
+        color: #f0954a !important;
+        font-weight: 600;
+        font-size: 16px;
+        line-height: 1;
+        margin-right: 8px;
+        vertical-align: -1px;
+    }
+    section[data-testid="stSidebar"] .st-key-btn_new_chat .stButton > button:hover {
+        background: rgba(255, 255, 255, 0.05) !important;
+        color: var(--text-primary) !important;
+        border-color: var(--border-hi) !important;
+        transform: none !important;
+        box-shadow: none !important;
+    }
+
+    html.sidebar-collapsed section[data-testid="stSidebar"] .stButton > button {
+        width: 40px !important;
+        height: 40px !important;
+        padding: 0 !important;
+        margin: 0 auto !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+    html.sidebar-collapsed section[data-testid="stSidebar"] .stButton,
+    html.sidebar-collapsed section[data-testid="stSidebar"] .stButton > div {
+        width: 100% !important;
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+    }
+    html.sidebar-collapsed section[data-testid="stSidebar"] [data-testid="stSidebarUserContent"] {
+        display: block !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+    html.sidebar-collapsed section[data-testid="stSidebar"] [data-testid="stSidebarContent"] {
+        display: block !important;
+    }
+    html.sidebar-collapsed section[data-testid="stSidebar"] [data-testid="stCheckbox"],
+    html.sidebar-collapsed section[data-testid="stSidebar"] [data-testid="stToggle"],
+    html.sidebar-collapsed section[data-testid="stSidebar"] [data-testid="stWidgetLabel"],
+    html.sidebar-collapsed section[data-testid="stSidebar"] label,
+    html.sidebar-collapsed section[data-testid="stSidebar"] [data-testid="stElementContainer"]:has(input[type="checkbox"]) {
+        display: none !important;
+    }
+    html.sidebar-collapsed section[data-testid="stSidebar"] .stButton > button > div {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        width: 100% !important;
+        height: 100% !important;
+        overflow: hidden !important;
+    }
+    html.sidebar-collapsed section[data-testid="stSidebar"] .stButton > button p {
+        max-width: 1.2em !important;
+        overflow: hidden !important;
+        white-space: nowrap !important;
+        text-overflow: clip !important;
+        margin: 0 !important;
+        font-size: 18px !important;
+        line-height: 1 !important;
+    }
+    html.sidebar-collapsed section[data-testid="stSidebar"] .stButton > button:has([data-testid="stIconMaterial"]) > div {
+        gap: 0 !important;
+    }
+    html.sidebar-collapsed section[data-testid="stSidebar"] .stButton > button:has([data-testid="stIconMaterial"]) [data-testid="stMarkdownContainer"] {
+        display: none !important;
+    }
+    html.sidebar-collapsed .uigpt-brand .name,
+    html.sidebar-collapsed .uigpt-recent-label {
+        display: none !important;
+    }
+    html.sidebar-collapsed .uigpt-brand {
+        width: 100% !important;
+        height: 40px !important;
+        justify-content: center !important;
+        margin: 8px 0 14px !important;
+        padding: 0 !important;
+        border: 0 !important;
+        border-radius: 0 !important;
+        background: transparent !important;
+        box-shadow: none !important;
+    }
+    /* Keep the logo tile visible on the collapsed rail (only the wordmark
+       hides). It sits at the top of the 64px rail; the reopen chevron is
+       nudged below it (see .uigpt-sidebar-toggle collapsed rule) so they
+       do not overlap. */
+    html.sidebar-collapsed .uigpt-brand .cloud-icon {
+        display: inline-flex !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        width: 30px !important;
+        height: 30px !important;
+        flex: 0 0 30px !important;
+    }
+    body:has(#uigpt-sidebar-toggle-input:not(:checked)) section[data-testid="stSidebar"] .stButton > button {
+        width: 40px !important;
+        height: 40px !important;
+        padding: 0 !important;
+        margin: 0 auto !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+    body:has(#uigpt-sidebar-toggle-input:not(:checked)) section[data-testid="stSidebar"] .stButton,
+    body:has(#uigpt-sidebar-toggle-input:not(:checked)) section[data-testid="stSidebar"] .stButton > div {
+        width: 100% !important;
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+    }
+    body:has(#uigpt-sidebar-toggle-input:not(:checked)) section[data-testid="stSidebar"] [data-testid="stSidebarUserContent"] {
+        display: block !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+    body:has(#uigpt-sidebar-toggle-input:not(:checked)) section[data-testid="stSidebar"] [data-testid="stCheckbox"],
+    body:has(#uigpt-sidebar-toggle-input:not(:checked)) section[data-testid="stSidebar"] [data-testid="stToggle"],
+    body:has(#uigpt-sidebar-toggle-input:not(:checked)) section[data-testid="stSidebar"] [data-testid="stWidgetLabel"],
+    body:has(#uigpt-sidebar-toggle-input:not(:checked)) section[data-testid="stSidebar"] label,
+    body:has(#uigpt-sidebar-toggle-input:not(:checked)) section[data-testid="stSidebar"] [data-testid="stElementContainer"]:has(input[type="checkbox"]) {
+        display: none !important;
+    }
+    body:has(#uigpt-sidebar-toggle-input:not(:checked)) section[data-testid="stSidebar"] .stButton > button > div {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        width: 100% !important;
+        height: 100% !important;
+        overflow: hidden !important;
+    }
+    body:has(#uigpt-sidebar-toggle-input:not(:checked)) section[data-testid="stSidebar"] .stButton > button p {
+        max-width: 1.2em !important;
+        overflow: hidden !important;
+        white-space: nowrap !important;
+        text-overflow: clip !important;
+        margin: 0 !important;
+        font-size: 18px !important;
+        line-height: 1 !important;
+    }
+    body:has(#uigpt-sidebar-toggle-input:not(:checked)) section[data-testid="stSidebar"] .stButton > button:has([data-testid="stIconMaterial"]) > div {
+        gap: 0 !important;
+    }
+    body:has(#uigpt-sidebar-toggle-input:not(:checked)) section[data-testid="stSidebar"] .stButton > button:has([data-testid="stIconMaterial"]) [data-testid="stMarkdownContainer"] {
+        display: none !important;
+    }
+    body:has(#uigpt-sidebar-toggle-input:not(:checked)) .uigpt-brand .name,
+    body:has(#uigpt-sidebar-toggle-input:not(:checked)) .uigpt-recent-label {
+        display: none !important;
+    }
+    body:has(#uigpt-sidebar-toggle-input:not(:checked)) .uigpt-brand {
+        width: 100% !important;
+        height: 40px !important;
+        justify-content: center !important;
+        margin: 8px 0 14px !important;
+        padding: 0 !important;
+        border: 0 !important;
+        border-radius: 0 !important;
+        background: transparent !important;
+        box-shadow: none !important;
+    }
+    body:has(#uigpt-sidebar-toggle-input:not(:checked)) .uigpt-brand .cloud-icon {
+        display: inline-flex !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        width: 30px !important;
+        height: 30px !important;
+        flex: 0 0 30px !important;
+    }
+
+    /* Collapsed New Chat: clipping "＋ New Chat" to 1.2em left-aligned the plus
+       inside its box, so it sat a few px left of the 40px chip's centre. Hide
+       the text and draw a centred "+" instead, so the glyph is dead-centre. */
+    html.sidebar-collapsed section[data-testid="stSidebar"] .st-key-btn_new_chat .stButton > button p,
+    body:has(#uigpt-sidebar-toggle-input:not(:checked)) section[data-testid="stSidebar"] .st-key-btn_new_chat .stButton > button p {
+        font-size: 0 !important;
+        max-width: none !important;
+        width: 100% !important;
+        text-align: center !important;
+    }
+    html.sidebar-collapsed section[data-testid="stSidebar"] .st-key-btn_new_chat .stButton > button p::before,
+    body:has(#uigpt-sidebar-toggle-input:not(:checked)) section[data-testid="stSidebar"] .st-key-btn_new_chat .stButton > button p::before {
+        content: "+";
+        display: block;
+        width: 100%;
+        margin: 0 !important;
+        font-size: 20px !important;
+        font-weight: 600 !important;
+        line-height: 1 !important;
+        color: #f0954a !important;
+        text-align: center !important;
+    }
+    /* Direction A left-aligns the New Chat row (justify-content: flex-start) for
+       the expanded label — set on the button, its div AND the inner label span
+       (the base text-only-button rule). Collapsed, that flex-start pushed the
+       lone "+" off-centre, so re-centre all three on the rail. */
+    html.sidebar-collapsed section[data-testid="stSidebar"] .st-key-btn_new_chat .stButton > button,
+    html.sidebar-collapsed section[data-testid="stSidebar"] .st-key-btn_new_chat .stButton > button > div,
+    html.sidebar-collapsed section[data-testid="stSidebar"] .st-key-btn_new_chat .stButton > button > div > span,
+    body:has(#uigpt-sidebar-toggle-input:not(:checked)) section[data-testid="stSidebar"] .st-key-btn_new_chat .stButton > button,
+    body:has(#uigpt-sidebar-toggle-input:not(:checked)) section[data-testid="stSidebar"] .st-key-btn_new_chat .stButton > button > div,
+    body:has(#uigpt-sidebar-toggle-input:not(:checked)) section[data-testid="stSidebar"] .st-key-btn_new_chat .stButton > button > div > span {
+        justify-content: center !important;
+    }
+
+    .uigpt-sidebar-toggle-input {
+        position: fixed;
+        opacity: 0;
+        pointer-events: none;
+        width: 1px;
+        height: 1px;
+    }
+    .uigpt-sidebar-toggle {
+        position: fixed;
+        /* Level with the logo/title row (the brand sits ~62px down), so the
+           expand key and the WebForge wordmark read as one header line. When
+           collapsed the rule below pulls it back to the top of the rail. */
+        top: 66px;
+        left: calc(var(--uigpt-sidebar-w) - 40px);
+        z-index: 2147483000;  /* basically max int32 — wins all stacking */
+        width: 28px !important;
+        height: 28px !important;
+        padding: 0;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        background: var(--bg-card);
+        color: var(--text-muted);
+        cursor: pointer;
+        outline: none;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
+        transition: background 0.15s ease, color 0.15s ease,
+                    border-color 0.15s ease, left 0.22s ease, transform 0.15s ease;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+    /* Collapsed: centre the chevron on the 64px rail (base left keeps it at the
+       sidebar's right edge while expanded). 18px = (64 - 28) / 2, so it lines up
+       with the logo and the New Chat / Recent icons below it. */
+    html.sidebar-collapsed .uigpt-sidebar-toggle,
+    body:has(#uigpt-sidebar-toggle-input:not(:checked)) .uigpt-sidebar-toggle {
+        left: 18px !important;
+        top: 14px !important;  /* back to the top of the 64px rail when collapsed */
+    }
+    .uigpt-sidebar-toggle:hover {
+        background: var(--bg-card-hi);
+        color: var(--text-primary);
+        border-color: var(--border-hi);
+    }
+    .uigpt-sidebar-toggle .sidebar-toggle-chevron {
+        display: block;
+        width: 16px;
+        height: 16px;
+        transition: transform 0.2s ease;
+    }
+    html.sidebar-collapsed .uigpt-sidebar-toggle .sidebar-toggle-chevron,
+    body:has(#uigpt-sidebar-toggle-input:not(:checked)) .uigpt-sidebar-toggle .sidebar-toggle-chevron {
+        transform: rotate(180deg);
+    }
+    .uigpt-sidebar-resizer {
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        left: calc(var(--uigpt-sidebar-w) - 4px);
+        z-index: 2147482500;
+        width: 8px;
+        cursor: col-resize;
+        background: transparent;
+        opacity: 0;
+        transition: opacity 0.15s ease, left 0.25s ease;
+    }
+    .uigpt-sidebar-resizer::after {
+        content: "";
+        position: absolute;
+        top: 72px;
+        bottom: 18px;
+        left: 3px;
+        width: 1px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.22);
+        opacity: 0;
+        transition: opacity 0.15s ease;
+    }
+    .uigpt-sidebar-resizer:hover::after,
+    html.webforge-resizing .uigpt-sidebar-resizer::after {
+        opacity: 1;
+    }
+    html.sidebar-collapsed .uigpt-sidebar-resizer {
+        display: block;
+    }
+
+    div[data-testid="stChatInput"],
+    div[data-testid="stBottom"],
+    div[data-testid="stBottomBlockContainer"] {
+        background: var(--bg-main) !important;
+    }
+    div[data-testid="stTextInputRootElement"] > div {
+        background: var(--bg-input) !important;
+        border: 1px solid var(--border) !important;
+        border-radius: 14px !important;
+        box-shadow: none !important;
+    }
+    div[data-testid="stTextInputRootElement"] input {
+        background: var(--bg-input) !important;
+        color: var(--text-primary) !important;
+        caret-color: var(--text-primary) !important;
+    }
+    div[data-testid="stTextInputRootElement"] input::placeholder {
+        color: var(--text-muted) !important;
+    }
+    /* Streamlit's default z-index for the sticky bottom bar is
+       sidebar-1 (=99), which sits UNDER our overridden sidebar
+       (z-index:100). Although they don't normally overlap as flex
+       siblings, we lift the chat input above any stray fixed/sticky
+       wrappers so clicks always land on the textarea. We also pin
+       pointer-events: auto in case any ancestor forced 'none'. */
+    div[data-testid="stBottom"] {
+        left: var(--uigpt-sidebar-w) !important;
+        width: calc(100vw - var(--uigpt-sidebar-w) - var(--webforge-preview-gap)) !important;
+        z-index: 200 !important;
+        pointer-events: auto !important;
+        transition: left 0.25s ease, width 0.25s ease !important;
+    }
+    div[data-testid="stChatInput"],
+    div[data-testid="stChatInput"] textarea {
+        pointer-events: auto !important;
+    }
+    div[data-testid="stChatInput"] > div,
+    div[data-testid="stChatInput"] > div > div,
+    div[data-testid="stChatInput"] [data-baseweb],
+    div[data-testid="stChatInput"] [data-baseweb="textarea"],
+    div[data-testid="stChatInput"] [data-baseweb="base-input"] {
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+    }
+    div[data-testid="stChatInput"] > div > div:first-child {
+        background: var(--bg-input) !important;
+        border: 1px solid var(--border) !important;
+        border-radius: 14px !important;
+        box-shadow: none !important;
+    }
+    div[data-testid="stChatInput"] textarea {
+        background: var(--bg-input) !important;
+        color: var(--text-primary) !important;
+        caret-color: var(--text-primary) !important;
+        border: none !important;
+        box-shadow: none !important;
+    }
+    div[data-testid="stChatInput"] textarea::placeholder {
+        color: var(--text-muted) !important;
+    }
+    button[data-testid="stChatInputSubmitButton"],
+    div[data-testid="stChatInput"] button {
+        width: 40px !important;
+        min-width: 40px !important;
+        height: 40px !important;
+        padding: 0 !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        background: #e6893f !important;
+        color: #1a1206 !important;
+        border: 1px solid rgba(230, 137, 63, 0.60) !important;
+        border-radius: 12px !important;
+        box-shadow: 0 0 0 3px rgba(230, 137, 63, 0.14) !important;
+        cursor: pointer !important;
+        transition: background 0.15s ease, border-color 0.15s ease,
+                    color 0.15s ease, box-shadow 0.15s ease,
+                    transform 0.15s ease !important;
+    }
+    button[data-testid="stChatInputSubmitButton"]:not(:disabled):hover,
+    div[data-testid="stChatInput"] button:not(:disabled):hover {
+        background: #f0954a !important;
+        border-color: #f0954a !important;
+        color: #1a1206 !important;
+        box-shadow: 0 0 0 4px rgba(230, 137, 63, 0.22) !important;
+        transform: translateY(-1px);
+    }
+    /* Empty field -> the send key is disabled; keep it quiet. Orange only
+       lights once there is something to send (enabled == has text). */
+    button[data-testid="stChatInputSubmitButton"]:disabled,
+    div[data-testid="stChatInput"] button:disabled {
+        background: #1b1b1b !important;
+        color: var(--text-muted) !important;
+        border-color: var(--border) !important;
+        box-shadow: none !important;
+        cursor: default !important;
+        transform: none !important;
+    }
+    button[data-testid="stChatInputSubmitButton"] svg,
+    button[data-testid="stChatInputSubmitButton"] svg *,
+    div[data-testid="stChatInput"] button svg,
+    div[data-testid="stChatInput"] button svg * {
+        display: none !important;
+    }
+    button[data-testid="stChatInputSubmitButton"]::before,
+    div[data-testid="stChatInput"] button::before {
+        content: "↑";
+        font-size: 18px;
+        font-weight: 700;
+        line-height: 1;
+        color: currentColor;
+    }
+    [data-testid="stAppViewContainer"] .stButton > button[kind="secondary"] {
+        min-height: 46px !important;
+        border-radius: 14px !important;
+        border: 1px solid rgba(248, 113, 113, 0.45) !important;
+        background: rgba(127, 29, 29, 0.28) !important;
+        color: #fecaca !important;
+        font-weight: 700 !important;
+        box-shadow: 0 0 0 3px rgba(248, 113, 113, 0.12) !important;
+        transition: background 0.15s ease, border-color 0.15s ease,
+                    box-shadow 0.15s ease, transform 0.15s ease !important;
+    }
+    [data-testid="stAppViewContainer"] .stButton > button[kind="secondary"]:hover {
+        background: rgba(153, 27, 27, 0.34) !important;
+        border-color: rgba(252, 165, 165, 0.72) !important;
+        box-shadow: 0 0 0 4px rgba(248, 113, 113, 0.18) !important;
+        transform: translateY(-1px);
+    }
+    [data-testid="stSidebar"] .stButton > button[kind="secondary"] {
+        min-height: unset !important;
+        border-radius: 10px !important;
+        border: 1px solid var(--border) !important;
+        background: var(--bg-card) !important;
+        color: var(--text-secondary) !important;
+        font-weight: 500 !important;
+        box-shadow: none !important;
+        transform: none !important;
+    }
+    [data-testid="stSidebar"] .stButton > button[kind="secondary"]:hover {
+        background: var(--bg-card-hi) !important;
+        border-color: var(--border-hi) !important;
+        color: var(--accent-hi) !important;
+        box-shadow: none !important;
+        transform: none !important;
+    }
+
+    div[data-testid="stChatMessage"] {
+        background: transparent !important;
+        color: var(--text-primary) !important;
+        border: none !important;
+        box-shadow: none !important;
+        padding: 0.5rem 0 !important;
+        display: flex !important;
+        align-items: flex-start !important;
+        gap: 12px !important;
+    }
+    div[data-testid="stChatMessage"] > div:not([data-testid*="Avatar"]):not([data-testid*="avatar"]) {
+        background: var(--bg-card) !important;
+        color: var(--text-primary) !important;
+        border: 1px solid var(--border) !important;
+        border-radius: 14px !important;
+        padding: 0.7rem 1rem !important;
+        max-width: 80% !important;
+        box-shadow: none !important;
+    }
+    div[data-testid="stChatMessage"]:has([data-testid="stChatMessageAvatarAssistant"]) {
+        flex-direction: row !important;
+        justify-content: flex-start !important;
+    }
+    div[data-testid="stChatMessage"]:has([data-testid="stChatMessageAvatarAssistant"])
+        > div:not([data-testid*="Avatar"]):not([data-testid*="avatar"]) {
+        background: var(--bg-card) !important;
+        color: var(--text-primary) !important;
+        border-color: var(--border) !important;
+        margin-right: auto !important;
+    }
+    div[data-testid="stChatMessage"]:has([data-testid="stChatMessageAvatarUser"]) {
+        flex-direction: row-reverse !important;
+        justify-content: flex-end !important;
+        text-align: left !important;
+    }
+    div[data-testid="stChatMessage"]:has([data-testid="stChatMessageAvatarUser"])
+        > div:not([data-testid*="Avatar"]):not([data-testid*="avatar"]) {
+        background: #20242b !important;
+        color: var(--user-text) !important;
+        border-color: var(--border) !important;
+        margin-left: auto !important;
+        box-shadow: none !important;
+    }
+    div[data-testid="stChatMessage"] [data-testid="stChatMessageAvatarUser"],
+    div[data-testid="stChatMessage"] [data-testid="stChatMessageAvatarAssistant"] {
+        background: var(--bg-card) !important;
+        border: 1px solid var(--border) !important;
+        color: #ffffff !important;
+        flex-shrink: 0 !important;
+    }
+    div[data-testid="stChatMessage"] [data-testid="stChatMessageAvatarUser"] *,
+    div[data-testid="stChatMessage"] [data-testid="stChatMessageAvatarAssistant"] * {
+        color: #ffffff !important;
+        fill: #ffffff !important;
+        stroke: #ffffff !important;
+    }
+    /* Assistant avatar = the WebForge mark (orange square + white layers icon),
+       the same logo as the sidebar and the boot curtain. The default glyph is
+       hidden; the logo is painted as a layered background (icon over gradient). */
+    div[data-testid="stChatMessage"] [data-testid="stChatMessageAvatarAssistant"] {
+        border-radius: 9px !important;
+        border: 1px solid rgba(255, 255, 255, 0.18) !important;
+        background:
+            url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 3l9 4-9 4-9-4z'/%3E%3Cpath d='M3 12l9 4 9-4M3 17l9 4 9-4'/%3E%3C/svg%3E")
+                center / 56% no-repeat,
+            linear-gradient(135deg, #d9741f 0%, #f6ac66 100%) !important;
+        box-shadow: 0 4px 14px rgba(224, 128, 54, 0.30) !important;
+    }
+    div[data-testid="stChatMessage"] [data-testid="stChatMessageAvatarAssistant"] > * {
+        display: none !important;
+    }
+    /* No user avatar: you know who you are. The row stays right-aligned because
+       the user bubble keeps margin-left:auto and the flex gap collapses once the
+       avatar is gone. */
+    div[data-testid="stChatMessage"] [data-testid="stChatMessageAvatarUser"] {
+        display: none !important;
+    }
+    /* One avatar per assistant run: hide the mark on an assistant message that
+       directly follows another assistant message, so a multi-part reply tucks
+       under a single logo. visibility (not display) keeps the bubble aligned. */
+    div[data-testid="stLayoutWrapper"]:has([data-testid="stChatMessageAvatarAssistant"])
+        + div[data-testid="stLayoutWrapper"]:has([data-testid="stChatMessageAvatarAssistant"])
+        [data-testid="stChatMessageAvatarAssistant"] {
+        visibility: hidden !important;
+    }
+
+    /* Finished-reply steps = Form A: a quiet toggle, not a grey box. No
+       background, no border; a small muted summary line. The mono log inside
+       (.wf-fin-log) matches the live streaming box's raw log, so the two states
+       read as one language. */
+    div[data-testid="stChatMessage"] details,
+    div[data-testid="stChatMessage"] [data-testid="stExpander"],
+    div[data-testid="stChatMessage"] [data-testid="stStatusWidget"] {
+        background: transparent !important;
+        border: none !important;
+        border-radius: 0 !important;
+        margin: 2px 0 4px !important;
+    }
+    div[data-testid="stChatMessage"] details summary,
+    div[data-testid="stChatMessage"] [data-testid="stExpander"] summary,
+    div[data-testid="stChatMessage"] [data-testid="stStatusWidget"] summary {
+        color: var(--text-muted) !important;
+        font-size: 12px !important;
+        font-weight: 400 !important;
+        padding: 2px 2px !important;
+    }
+    div[data-testid="stChatMessage"] details summary:hover,
+    div[data-testid="stChatMessage"] [data-testid="stExpander"] summary:hover {
+        color: var(--text-secondary) !important;
+    }
+    .wf-fin-log {
+        font-family: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace !important;
+        font-size: 10.5px !important;
+        line-height: 1.7 !important;
+        color: #6f6f77 !important;
+        background: var(--bg-app) !important;
+        border: 1px solid var(--border) !important;
+        border-radius: 8px !important;
+        padding: 9px 11px !important;
+        margin-top: 4px !important;
+        overflow-x: auto !important;
+    }
+    .wf-fin-log .wf-fin-warn { color: #e6893f !important; }
+
+    .uigpt-floating-toggle {
+        display: none !important;
+    }
+    .uigpt-floating-toggle button {
+        background: transparent;
+        border: none;
+        outline: none;
+        box-shadow: none;
+        color: var(--text-primary);
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        cursor: pointer;
+        font-size: 20px;
+        line-height: 1;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        transition: background 0.15s ease, color 0.15s ease;
+    }
+    .uigpt-floating-toggle button:hover {
+        background: var(--bg-card-hi);
+        color: var(--accent);
+    }
+    .uigpt-theme-icon::before { content: ""; }
+
+    .webforge-preview-toggle-input {
+        position: fixed;
+        opacity: 0;
+        pointer-events: none;
+        width: 1px;
+        height: 1px;
+    }
+    .webforge-preview-toggle {
+        position: fixed;
+        top: 14px;
+        right: 14px;
+        z-index: 1000001;
+        width: 38px !important;
+        height: 38px !important;
+        margin: 0 !important;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 10px;
+        border: 1px solid var(--border);
+        background: #111111;
+        color: var(--text-secondary);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.30);
+        cursor: pointer;
+        transition: right 0.25s ease, background 0.15s ease,
+                    border-color 0.15s ease, color 0.15s ease;
+    }
+    .webforge-preview-toggle:hover {
+        background: #181818;
+        border-color: var(--border-hi);
+        color: var(--text-primary);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.30) !important;
+        transform: none !important;
+    }
+    .webforge-preview-toggle::before {
+        content: "language";
+        font-family: "Material Symbols Outlined";
+        font-size: 21px;
+        font-weight: 400;
+        line-height: 1 !important;
+    }
+    body:has(#webforge-preview-toggle-input:checked) .webforge-preview-toggle {
+        right: calc(var(--webforge-preview-panel-w) + 14px);
+    }
+    .webforge-preview-resizer {
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        right: calc(var(--webforge-preview-panel-w) - 4px);
+        z-index: 1000002;
+        width: 8px;
+        cursor: col-resize;
+        background: transparent;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.15s ease, right 0.25s ease;
+    }
+    .webforge-preview-resizer::after {
+        content: "";
+        position: absolute;
+        top: 18px;
+        bottom: 18px;
+        left: 3px;
+        width: 1px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.24);
+        opacity: 0;
+        transition: opacity 0.15s ease;
+    }
+    body:has(#webforge-preview-toggle-input:checked) .webforge-preview-resizer {
+        pointer-events: auto;
+    }
+    body:has(#webforge-preview-toggle-input:checked) .webforge-preview-resizer:hover::after,
+    html.webforge-resizing .webforge-preview-resizer::after {
+        opacity: 1;
+    }
+
+    .webforge-preview-shell {
+        width: min(980px, 100%);
+        margin: 18px auto 28px;
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        background: #0b0b0b;
+        overflow: hidden;
+        box-shadow: 0 18px 60px rgba(0, 0, 0, 0.28);
+    }
+    .webforge-preview-toolbar {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 10px;
+        border-bottom: 1px solid var(--border);
+        background: #101010;
+    }
+    .webforge-preview-tab {
+        min-width: 76px;
+        height: 32px;
+        padding: 0 12px;
+        border: 1px solid transparent;
+        border-radius: 8px;
+        background: transparent;
+        color: var(--text-muted);
+        font: 600 13px/1 "Inter", "Manrope", sans-serif;
+    }
+    .webforge-preview-tab.is-active {
+        border-color: var(--border-hi);
+        background: #1a1a1a;
+        color: var(--text-primary);
+    }
+    .webforge-preview-frame {
+        height: calc(100vh - 72px);
+        display: grid;
+        place-items: center;
+        margin: 0;
+        border-top: 1px solid var(--border);
+        background:
+            linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+            linear-gradient(180deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+            #080808;
+        background-size: 36px 36px;
+    }
+    .webforge-preview-empty {
+        background:
+            linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+            linear-gradient(180deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+            #080808;
+    }
+    .webforge-preview-empty-text {
+        max-width: 240px;
+        color: var(--text-muted);
+        font: 500 13px/1.5 "Inter", "Manrope", sans-serif;
+        text-align: center;
+    }
+    .webforge-preview-loading {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        color: var(--text-muted);
+        font: 500 13px/1 "Inter", "Manrope", sans-serif;
+    }
+    .webforge-preview-spinner {
+        width: 18px;
+        height: 18px;
+        border: 2px solid rgba(255, 255, 255, 0.16);
+        border-top-color: rgba(255, 255, 255, 0.72);
+        border-radius: 50%;
+        animation: webforge-spin 0.9s linear infinite;
+    }
+    @keyframes webforge-spin {
+        to { transform: rotate(360deg); }
+    }
+    .st-key-webforge_preview_panel {
+        position: fixed !important;
+        top: 0 !important;
+        right: 0 !important;
+        bottom: 0 !important;
+        width: var(--webforge-preview-panel-w) !important;
+        height: 100vh !important;
+        margin: 0 !important;
+        border-left: 1px solid var(--border);
+        border-top: 0;
+        border-right: 0;
+        border-bottom: 0;
+        border-radius: 0;
+        background: #0b0b0b;
+        overflow: hidden;
+        box-shadow: -18px 0 60px rgba(0, 0, 0, 0.28);
+        transform: translateX(100%);
+        pointer-events: none;
+        transition: transform 0.25s ease, width 0.22s ease;
+        z-index: 180;
+    }
+    body:has(#webforge-preview-toggle-input:checked) .st-key-webforge_preview_panel {
+        transform: translateX(0);
+        pointer-events: auto;
+    }
+    .st-key-webforge_preview_panel > div:first-child {
+        padding: 12px !important;
+        border-bottom: 0 !important;
+        background: #101010 !important;
+    }
+    .st-key-webforge_preview_panel iframe[title="st.iframe"] {
+        width: 100% !important;
+        /* The iframe sits 96px below the top of the viewport (the toggle header
+           plus Streamlit's element spacing), so its height must be the viewport
+           minus that same 96px. It was 72px, which left the iframe 24px too tall:
+           its bottom fell 24px below the viewport and clipped the lower half of
+           the viewport-size toolbar (Fit/Desktop/Tablet/Phone) inside it. */
+        height: calc(100vh - 96px) !important;
+        border: 0 !important;
+        display: block !important;
+        background: #080808 !important;
+    }
+    .st-key-webforge_preview_panel [data-testid="stSegmentedControl"] {
+        width: fit-content !important;
+    }
+    .st-key-webforge_preview_panel [data-testid="stSegmentedControl"] label {
+        min-height: 32px !important;
+        border-radius: 8px !important;
+        color: var(--text-muted) !important;
+        font: 600 13px/1 "Inter", "Manrope", sans-serif !important;
+    }
+    /* Preview / Select toggle -> sliding-pill look (B) with an eye icon on
+       Preview and a cursor icon on Select. The icon is a CSS mask coloured by
+       currentColor, so it stays crisp in both states: dark on the light active
+       chip, muted on the dark track. */
+    .st-key-webforge_preview_panel [data-testid="stButtonGroup"] > div {
+        position: relative !important;
+        width: fit-content !important;
+        /* No outer box: transparent track, no border. The sliding white pill
+           alone marks the active mode. */
+        background: transparent !important;
+        border: 1px solid transparent !important;
+        border-radius: 999px !important;
+        padding: 3px !important;
+        gap: 0 !important;
+        overflow: hidden !important;
+    }
+    /* Sliding pill. It lives on the track div, which survives the mode-switch
+       rerun (only the buttons are rebuilt), so its transform transition really
+       animates. Two equal-width segments make a 50% pill line up; :has() flips
+       it to whichever segment is active. */
+    .st-key-webforge_preview_panel [data-testid="stButtonGroup"] > div::before {
+        content: "";
+        position: absolute;
+        top: 3px;
+        bottom: 3px;
+        left: 3px;
+        width: calc(50% - 3px);
+        border-radius: 999px;
+        background: #ededed;
+        z-index: 0;
+        transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    /* The pill position is driven by data-wf-active on the track (set by JS on
+       click and re-synced after each rerun), NOT by :has() on the buttons. The
+       buttons are rebuilt on every mode switch, so a :has() condition flickers
+       and the transition jumps; the track element itself persists, so a data
+       attribute on it transitions smoothly. */
+    .st-key-webforge_preview_panel [data-testid="stButtonGroup"] > div[data-wf-active="1"]::before {
+        transform: translateX(100%);
+    }
+    .st-key-webforge_preview_panel [data-testid="stButtonGroup"] button {
+        position: relative !important;
+        z-index: 1 !important;
+        flex: 0 0 96px !important;
+        width: 96px !important;
+        border: 0 !important;
+        background: transparent !important;
+        border-radius: 999px !important;
+        color: var(--text-muted) !important;
+        box-shadow: none !important;
+        min-height: 30px !important;
+        padding: 5px 12px !important;
+        font: 600 13px/1 "Inter", "Manrope", sans-serif !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        white-space: nowrap !important;
+        overflow: visible !important;
+        gap: 6px !important;
+        transition: color .18s ease !important;
+    }
+    .st-key-webforge_preview_panel [data-testid="stButtonGroup"] button:hover {
+        color: var(--text-secondary) !important;
+        background: transparent !important;
+    }
+    /* Active text is dark to read on the light sliding pill. The pill is driven by
+       data-wf-active on the track (JS), so key the dark text on the SAME source,
+       not on Streamlit's controlActive -- otherwise the two disagree for a frame
+       after a switch and the active label goes dark-on-dark (invisible). Whatever
+       segment the pill sits under gets the dark text: no data-wf-active or "0" ->
+       pill on segment 1 (Preview); "1" -> pill on segment 2 (Select). */
+    .st-key-webforge_preview_panel [data-testid="stButtonGroup"] > div:not([data-wf-active="1"]) button:nth-of-type(1),
+    .st-key-webforge_preview_panel [data-testid="stButtonGroup"] > div:not([data-wf-active="1"]) button:nth-of-type(1):hover,
+    .st-key-webforge_preview_panel [data-testid="stButtonGroup"] > div[data-wf-active="1"] button:nth-of-type(2),
+    .st-key-webforge_preview_panel [data-testid="stButtonGroup"] > div[data-wf-active="1"] button:nth-of-type(2):hover {
+        background: transparent !important;
+        color: #0a0a0a !important;
+    }
+    .st-key-webforge_preview_panel [data-testid="stButtonGroup"] button::before {
+        content: "";
+        width: 14px;
+        height: 14px;
+        flex: 0 0 auto;
+        background-color: currentColor;
+        -webkit-mask-repeat: no-repeat;
+        mask-repeat: no-repeat;
+        -webkit-mask-position: center;
+        mask-position: center;
+        -webkit-mask-size: contain;
+        mask-size: contain;
+    }
+    .st-key-webforge_preview_panel [data-testid="stButtonGroup"] button:nth-of-type(1)::before {
+        -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z'/%3E%3Ccircle cx='12' cy='12' r='3'/%3E%3C/svg%3E");
+        mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z'/%3E%3Ccircle cx='12' cy='12' r='3'/%3E%3C/svg%3E");
+    }
+    .st-key-webforge_preview_panel [data-testid="stButtonGroup"] button:nth-of-type(2)::before {
+        -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 3l7 17 2.5-6.5L20 11z'/%3E%3C/svg%3E");
+        mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 3l7 17 2.5-6.5L20 11z'/%3E%3C/svg%3E");
+    }
+    .webforge-maximize-btn {
+        position: absolute;
+        top: 14px;
+        right: 14px;
+        width: 30px;
+        height: 30px;
+        padding: 0;
+        display: inline-grid;
+        place-items: center;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        background: #141414;
+        color: var(--text-muted);
+        cursor: pointer;
+        z-index: 200;
+        transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+    }
+    .webforge-maximize-btn:hover {
+        background: #1d1d1d;
+        color: var(--text-primary);
+        border-color: var(--border-hi);
+    }
+    .webforge-maximize-btn svg {
+        width: 15px;
+        height: 15px;
+        display: block;
+    }
+    /* When the preview panel is maximized (full screen), the sidebar is fully
+       covered, so hide its logo toggle and drag handle to stop them overlapping
+       the Preview / Select header. Restoring the panel brings them back. */
+    html.webforge-preview-maximized .uigpt-sidebar-toggle,
+    html.webforge-preview-maximized .uigpt-sidebar-resizer {
+        display: none !important;
+    }
+    /* Preview status: loading spinner overlay inside the panel body. Starts
+       below the 56px header so Preview / Select / maximize stay usable. */
+    .webforge-preview-loading-overlay {
+        position: absolute;
+        inset: 56px 0 0 0;
+        display: none;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 14px;
+        text-align: center;
+        padding: 24px;
+        z-index: 190;
+        background:
+            linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+            linear-gradient(180deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+            #080808;
+        background-size: 28px 28px;
+    }
+    html[data-preview-notice="loading"] .webforge-preview-loading-overlay {
+        display: flex;
+    }
+    .webforge-preview-loading-overlay .wf-spinner {
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        border: 3px solid rgba(255, 255, 255, 0.12);
+        border-top-color: #f0954a;
+        animation: wf-spin 0.8s linear infinite;
+    }
+    @keyframes wf-spin { to { transform: rotate(360deg); } }
+    .webforge-preview-loading-overlay .wf-loading-txt {
+        color: #cfcfcf;
+        font: 500 13px "Inter", "Manrope", sans-serif;
+    }
+    /* Floating status bubble beside the panel. Orange = loading, green = ready.
+       Its right offset is set from JS to sit just left of the panel edge. */
+    .webforge-preview-bubble {
+        position: fixed;
+        top: 88px;
+        right: 420px;
+        z-index: 195;
+        display: none;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 14px;
+        border-radius: 999px;
+        background: linear-gradient(180deg, #f0954a, #e08036);
+        color: #231107;
+        font: 700 13px "Inter", "Manrope", sans-serif;
+        white-space: nowrap;
+        box-shadow: 0 10px 26px rgba(224, 128, 54, 0.36), 0 2px 6px rgba(0, 0, 0, 0.4);
+        animation: wf-bob 1.6s ease-in-out infinite;
+    }
+    html[data-preview-notice="loading"] .webforge-preview-bubble,
+    html[data-preview-notice="ready"] .webforge-preview-bubble {
+        display: inline-flex;
+    }
+    .webforge-preview-bubble::after {
+        content: "";
+        position: absolute;
+        right: -8px;
+        top: 50%;
+        transform: translateY(-50%);
+        border-top: 8px solid transparent;
+        border-bottom: 8px solid transparent;
+        border-left: 9px solid #e08036;
+    }
+    .webforge-preview-bubble .wf-bubble-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #231107;
+        opacity: 0.5;
+        animation: wf-pulse 1.2s ease-in-out infinite;
+    }
+    @keyframes wf-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+    @keyframes wf-pulse { 0%, 100% { opacity: 0.35; } 50% { opacity: 0.9; } }
+    .webforge-preview-bubble.is-ready {
+        background: linear-gradient(180deg, #57c07a, #3fa564);
+        color: #062012;
+        box-shadow: 0 10px 26px rgba(63, 165, 100, 0.30), 0 2px 6px rgba(0, 0, 0, 0.4);
+    }
+    .webforge-preview-bubble.is-ready::after {
+        border-left-color: #3fa564;
+    }
+    .webforge-preview-bubble.is-ready .wf-bubble-dot {
+        display: none;
+    }
+    .webforge-select-hint {
+        color: var(--text-muted);
+        font: 500 13px/1.4 "Inter", "Manrope", sans-serif;
+        padding: 16px 18px 4px;
+    }
+    .st-key-webforge_select_targets {
+        padding: 10px 18px 18px;
+    }
+    .st-key-webforge_select_targets .stButton > button,
+    .st-key-webforge_select_targets button[data-testid^="stBaseButton"],
+    [class*="st-key-webforge_select_"] button[data-testid^="stBaseButton"] {
+        min-height: 86px !important;
+        border-radius: 10px !important;
+        border: 1px solid rgba(255, 255, 255, 0.11) !important;
+        background: #111111 !important;
+        color: var(--text-secondary) !important;
+        box-shadow: none !important;
+        transform: none !important;
+        font: 700 15px/1.2 "Inter", "Manrope", sans-serif !important;
+        transition: border-color 0.14s ease, background 0.14s ease,
+                    box-shadow 0.14s ease, color 0.14s ease,
+                    transform 0.14s ease !important;
+    }
+    .st-key-webforge_select_targets .stButton > button:hover,
+    .st-key-webforge_select_targets button[data-testid^="stBaseButton"]:hover,
+    [class*="st-key-webforge_select_"] button[data-testid^="stBaseButton"]:hover {
+        border-color: rgba(255, 255, 255, 0.56) !important;
+        background: #181818 !important;
+        color: var(--text-primary) !important;
+        box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.18),
+                    0 0 0 3px rgba(255, 255, 255, 0.08) !important;
+        transform: translateY(-1px) !important;
+    }
+    .st-key-webforge_select_targets button[data-testid="stBaseButton-primary"],
+    .st-key-webforge_select_targets button[data-testid="stBaseButton-primary"]:hover,
+    [class*="st-key-webforge_select_"] button[data-testid="stBaseButton-primary"],
+    [class*="st-key-webforge_select_"] button[data-testid="stBaseButton-primary"]:hover {
+        border-color: rgba(255, 255, 255, 0.72) !important;
+        background: #202020 !important;
+        color: #ffffff !important;
+        box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.28),
+                    0 0 0 3px rgba(255, 255, 255, 0.12) !important;
+    }
+    .webforge-selected-info {
+        margin: 0 18px 14px;
+        padding: 12px 14px;
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        background: #111111;
+        display: grid;
+        gap: 5px;
+        color: var(--text-secondary);
+    }
+    .webforge-selected-info span {
+        color: var(--text-muted);
+        font: 600 11px/1 "Inter", "Manrope", sans-serif;
+        text-transform: uppercase;
+    }
+    .webforge-selected-info strong {
+        color: var(--text-primary);
+        font: 700 15px/1.25 "Inter", "Manrope", sans-serif;
+    }
+    .webforge-selected-info code {
+        color: var(--text-muted);
+        font: 500 12px/1.4 "Inter", "Manrope", sans-serif;
+        white-space: normal;
+    }
+    .st-key-webforge_preview_panel [data-testid="stForm"] {
+        margin: 0 18px 18px !important;
+        padding: 14px !important;
+        border: 1px solid var(--border) !important;
+        border-radius: 10px !important;
+        background: #101010 !important;
+    }
+    .st-key-webforge_preview_panel textarea {
+        background: var(--bg-input) !important;
+        color: var(--text-primary) !important;
+        border: 1px solid var(--border) !important;
+        border-radius: 10px !important;
+    }
+    .st-key-webforge_preview_panel textarea::placeholder {
+        color: var(--text-muted) !important;
+    }
+    .st-key-webforge_preview_panel [data-testid="stForm"] .stButton > button,
+    .st-key-webforge_preview_panel button[data-testid="stBaseButton-primaryFormSubmit"],
+    .st-key-FormSubmitter-webforge_modification_form-Submit-modification-request button {
+        min-height: 40px !important;
+        border-radius: 10px !important;
+        border: 1px solid var(--border-hi) !important;
+        background: #e5e5e5 !important;
+        color: #050505 !important;
+        box-shadow: none !important;
+        font-weight: 700 !important;
+    }
+    /* Annotation = a small pill that sits on the composer's top-left edge (not
+       the old full-width bar). Carries an "x" to cancel the target. */
+    .webforge-annotation-chip {
+        width: fit-content;
+        max-width: calc(100% - 24px);
+        margin: 0 0 -7px 14px;
+        padding: 3px 6px 3px 10px;
+        border: 1px solid rgba(224, 128, 54, 0.42);
+        border-radius: 999px;
+        background: rgba(224, 128, 54, 0.14);
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        color: #f0954a;
+        font: 600 11px/1.2 "Inter", "Manrope", sans-serif;
+        position: relative;
+        z-index: 3;
+    }
+    .webforge-annotation-chip span {
+        flex: 0 0 auto;
+        padding: 0;
+        border-radius: 0;
+        background: transparent;
+        color: inherit;
+        font-weight: 600;
+    }
+    .webforge-annotation-chip .wf-anno-x {
+        flex: 0 0 auto;
+        width: 15px;
+        height: 15px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+        border: 0;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.12);
+        color: var(--text-secondary);
+        font-size: 12px;
+        line-height: 1;
+        cursor: pointer;
+    }
+    .webforge-annotation-chip .wf-anno-x:hover {
+        background: rgba(255, 255, 255, 0.24);
+        color: var(--text-primary);
+    }
+
+    .uigpt-welcome { text-align: center; padding: 72px 16px 18px; }
+    .uigpt-welcome h1 {
+        display: inline-block;
+        width: max-content;
+        max-width: 100%;
+        overflow: hidden;
+        white-space: nowrap;
+        border-right: 2px solid rgba(244, 244, 245, 0.72);
+        font-family: "Manrope", "Inter", sans-serif;
+        font-size: 33px; font-weight: 700;
+        letter-spacing: -0.02em;
+        color: var(--text-primary); margin: 0 0 10px;
+        /* Riding-caret typewriter. Animating max-width (not width) means the
+           box grows until it hits the real text width and then clamps there,
+           so the border-right caret rides the last character and parks exactly
+           after "?" — no ch guessing, works for any font. */
+        animation:
+            webforge-type 2.4s steps(38, end) 0.25s both,
+            webforge-caret 0.78s step-end infinite;
+    }
+    .uigpt-welcome h1 .hero-accent {
+        color: #f0954a;
+    }
+    .uigpt-welcome p {
+        color: var(--text-muted); font-size: 18px; margin: 0;
+        opacity: 0;
+        transform: translateY(6px);
+        animation: webforge-fade-up 0.55s ease 2.7s forwards;
+    }
+    @keyframes webforge-type {
+        from { max-width: 0; }
+        to   { max-width: min(34ch, 100%); }
+    }
+    @keyframes webforge-caret {
+        50% { border-color: transparent; }
+    }
+    @keyframes webforge-fade-up {
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ask_user response box. The orchestrator's one clarifying question, drawn
+       with NATIVE Streamlit controls so a click submits back to Python: the
+       st.container(key="wf_ask_box") is the bubble, each option is an st.button
+       styled as a card, and the free-text row is an st.form (input + orange
+       Send). Clicking an option or pressing Send sends the answer. */
+    .st-key-wf_ask_box {
+        max-width: 720px;
+        margin: 4px auto 12px;
+        background: var(--assistant-bubble);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 16px 16px 14px;
+    }
+    .st-key-wf_ask_box [data-testid="stVerticalBlock"] { gap: 8px; }
+    .wf-ask-head { margin-bottom: 4px; }
+    .wf-ask-q {
+        font: 600 15px "Manrope", "Inter", sans-serif;
+        color: var(--text-primary);
+        margin: 0 0 3px;
+    }
+    .wf-ask-qsub {
+        color: var(--text-muted);
+        font-size: 12.5px;
+        margin: 0 0 4px;
+    }
+    /* Option cards: an st.button per option. The wrapper carries the widget key
+       class st-key-wf_ask_opt_<i>; the label is "**title**  
+ help", so the
+       bold <strong> is the title and the trailing text is the help line. */
+    [class*="st-key-wf_ask_opt_"] button {
+        width: 100%;
+        text-align: left;
+        justify-content: flex-start;
+        border: 1px solid var(--border);
+        background: rgba(255, 255, 255, 0.02);
+        border-radius: 12px;
+        padding: 10px 13px;
+        min-height: 0;
+        box-shadow: none;
+        transition: border-color 0.15s ease, background 0.15s ease;
+    }
+    /* Streamlit wraps the label in an inner flex div that centers it; left-align
+       that so the card reads title-then-help from the left edge. */
+    [class*="st-key-wf_ask_opt_"] button > div {
+        justify-content: flex-start;
+        width: 100%;
+    }
+    [class*="st-key-wf_ask_opt_"] button:hover {
+        border-color: #e08036;
+        background: rgba(224, 128, 54, 0.10);
+    }
+    [class*="st-key-wf_ask_opt_"] button:focus:not(:active) {
+        border-color: #e08036;
+        box-shadow: none;
+    }
+    [class*="st-key-wf_ask_opt_"] button p {
+        margin: 0;
+        color: var(--text-muted);
+        font: 400 12px "Inter", "Manrope", sans-serif;
+        line-height: 1.45;
+    }
+    [class*="st-key-wf_ask_opt_"] button p strong {
+        color: var(--text-primary);
+        font: 600 13.5px "Inter", "Manrope", sans-serif;
+    }
+    /* The box's OWN answer field (an st.form, not the main composer). */
+    .wf-ask-ownlbl {
+        font: 700 10px "Inter", sans-serif;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--text-muted);
+        margin: 12px 2px 6px;
+    }
+    .st-key-wf_ask_box [data-testid="stForm"] {
+        border: none;
+        padding: 0;
+    }
+    .st-key-wf_ask_text input {
+        background: var(--bg-input);
+        border: 1px solid var(--border);
+        border-radius: 11px;
+        padding: 10px 13px;
+        color: var(--text-primary);
+        font: 500 13px "Inter", "Manrope", sans-serif;
+    }
+    .st-key-wf_ask_text input::placeholder { color: var(--text-muted); }
+    .st-key-wf_ask_box [data-testid="stFormSubmitButton"] button {
+        background: #e08036;
+        color: #ffffff;
+        border: 1px solid transparent;
+        border-radius: 11px;
+        font-weight: 600;
+        box-shadow: none;
+        transition: filter 0.15s ease;
+    }
+    .st-key-wf_ask_box [data-testid="stFormSubmitButton"] button:hover {
+        filter: brightness(1.08);
+        border-color: transparent;
+    }
+
+
+    /* Conversation row: the ⋮ menu hides until the row is hovered (or the menu
+       is open/focused), so the sidebar stays clean. */
+    [class*="st-key-threadrow_"] [data-testid="stHorizontalBlock"] { gap: 4px; }
+    /* Collapsed rail: the row is one icon wide, so the invisible ⋮ column
+       would sit on top of the chat icon and swallow the click. Drop it. */
+    html.sidebar-collapsed [class*="st-key-threadrow_"] [data-testid="stColumn"]:has([class*="st-key-kebab_"]),
+    body:has(#uigpt-sidebar-toggle-input:not(:checked)) [class*="st-key-threadrow_"] [data-testid="stColumn"]:has([class*="st-key-kebab_"]) {
+        display: none !important;
+    }
+    [class*="st-key-kebab_"] button {
+        opacity: 0;
+        transition: opacity 0.13s ease, background 0.13s ease, color 0.13s ease;
+        color: var(--text-muted);
+        border: 1px solid transparent;
+        background: transparent;
+        box-shadow: none;
+        padding: 4px;
+        min-height: 0;
+    }
+    [class*="st-key-threadrow_"]:hover [class*="st-key-kebab_"] button,
+    [class*="st-key-kebab_"]:focus-within button {
+        opacity: 1;
+    }
+    [class*="st-key-kebab_"] button:hover {
+        background: rgba(255, 255, 255, 0.09);
+        color: var(--text-primary);
+    }
+    /* Kebab shows only the three dots — drop Streamlit's popover chevron. */
+    [class*="st-key-kebab_"] button [data-testid="stIconMaterial"] {
+        display: none !important;
+    }
+    /* The one red Delete inside the popover. Red = destructive, deliberately
+       NOT the orange accent (orange means active / primary). */
+    [class*="st-key-del_"] button {
+        background: rgba(224, 87, 74, 0.14) !important;
+        color: #f0685a !important;
+        border: 1px solid transparent !important;
+        box-shadow: none !important;
+    }
+    [class*="st-key-del_"] button:hover { background: #e0574a !important; }
+    [class*="st-key-del_"] button:hover * { color: #ffffff !important; }
+
+    /* Download key: pinned to the preview header, top-right, just left of the
+       expand key. Icon-only, muted to match the other header controls. */
+    .st-key-webforge_download_btn {
+        position: absolute !important;
+        top: 12px !important;
+        right: 52px !important;
+        z-index: 6 !important;
+        width: auto !important;
+    }
+    .st-key-webforge_download_btn button {
+        width: 34px !important;
+        height: 30px !important;
+        min-height: 30px !important;
+        padding: 0 !important;
+        border: 1px solid var(--border) !important;
+        background: var(--bg-card) !important;
+        color: var(--text-muted) !important;
+        border-radius: 8px !important;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35) !important;
+    }
+    .st-key-webforge_download_btn button:hover {
+        color: var(--text-primary) !important;
+        border-color: var(--border-hi) !important;
+        background: var(--bg-card-hi) !important;
+    }
+    /* Delete-warning modal: [data-testid="stDialog"] is the full-screen scrim
+       that holds the centered modal card, so blurring + dimming it blurs the
+       page behind while the card (its child) stays crisp. Download is the
+       orange primary action. */
+    div[data-testid="stDialog"] {
+        backdrop-filter: blur(5px) !important;
+        -webkit-backdrop-filter: blur(5px) !important;
+        background: rgba(0, 0, 0, 0.4) !important;
+    }
+    .st-key-webforge_delete_warn_dl button {
+        background: #e08036 !important;
+        color: #ffffff !important;
+        border: 1px solid transparent !important;
+    }
+    .st-key-webforge_delete_warn_dl button:hover { filter: brightness(1.08) !important; }
+    .st-key-webforge_delete_warn_dl button * { color: #ffffff !important; }
+    /* Delete = destructive, red (matches the sidebar row delete). */
+    .st-key-webforge_delete_warn_delete button {
+        background: rgba(224, 87, 74, 0.14) !important;
+        color: #f0685a !important;
+        border: 1px solid transparent !important;
+    }
+    .st-key-webforge_delete_warn_delete button:hover { background: #e0574a !important; }
+    .st-key-webforge_delete_warn_delete button:hover * { color: #ffffff !important; }
+
+    /* Strip the delete popover's floating panel so only the red button shows —
+       no dark box around it. Scoped via :has to the popovers that contain a
+       delete button, so tooltips and other popovers keep their frame. */
+    [data-baseweb="popover"]:has([class*="st-key-del_"]),
+    [data-baseweb="popover"]:has([class*="st-key-del_"]) > div,
+    [data-baseweb="popover"]:has([class*="st-key-del_"]) [data-testid="stPopoverBody"] {
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+    }
+    [data-baseweb="popover"]:has([class*="st-key-del_"]) [data-testid="stPopoverBody"] {
+        padding: 0 !important;
+        min-width: 0 !important;
+    }
+
+    .uigpt-brand {
+        display: flex; align-items: center; gap: 10px;
+        min-height: 40px;
+        margin: 2px 0 14px;
+        padding: 0 4px;
+    }
+    .uigpt-brand .cloud-icon {
+        position: relative;
+        width: 30px;
+        height: 30px;
+        flex: 0 0 30px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 9px;
+        overflow: hidden;
+        background: linear-gradient(135deg, #d9741f 0%, #f6ac66 100%);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        box-shadow: 0 4px 14px rgba(224, 128, 54, 0.40);
+    }
+    .uigpt-brand .cloud-icon svg {
+        width: 17px;
+        height: 17px;
+        display: block;
+    }
+    .uigpt-brand .cloud-icon::before,
+    .uigpt-brand .cloud-icon::after {
+        content: none !important;
+    }
+    .uigpt-brand .name {
+        font-family: "Geist", "Inter", "Manrope", sans-serif !important;
+        font-weight: 600 !important;
+        font-size: 22px !important;
+        letter-spacing: -0.02em !important;
+        color: var(--text-primary) !important;
+    }
+    .uigpt-brand .name .brand-accent {
+        color: #f0954a !important;
+    }
+    .uigpt-recent-label {
+        font-family: "Inter", "Manrope", sans-serif;
+        margin: 4px 0 8px;
+        padding: 0 4px; color: var(--text-muted);
+        text-transform: none; font-size: 12px;
+        letter-spacing: 0.01em; font-weight: 600;
+    }
+    

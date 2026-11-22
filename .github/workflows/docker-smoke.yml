@@ -1,0 +1,75 @@
+# A clean machine follows the README's Docker steps and checks the app runs.
+# No real API key exists here: every key is a dead placeholder, so nothing
+# can reach a paid model.
+name: Docker smoke test
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Make .env from .env.example, with dead keys
+        run: |
+          cp .env.example .env
+          sed -i 's/^OPENAI_API_KEY=.*/OPENAI_API_KEY=sk-ci-dead-key/' .env
+          sed -i 's/^TAVILY_API_KEY=.*/TAVILY_API_KEY=tvly-ci-dead-key/' .env
+          sed -i 's/^LANGSMITH_TRACING=.*/LANGSMITH_TRACING=false/' .env
+
+      - name: Build the image (README step)
+        run: docker compose build webforge
+
+      - name: Node, linters and Chromium are inside the image
+        run: |
+          docker run --rm webforge sh -c '
+            node --version && npx --no-install eslint --version &&
+            npx --no-install stylelint --version && npx --no-install html-validate --version &&
+            python -c "from playwright.sync_api import sync_playwright as p; b=p().start().chromium.launch(); print(\"chromium\", b.version); b.close()"'
+
+      - name: The real app's graph loads (no model call)
+        run: |
+          docker run --rm --env-file .env webforge \
+            python -c "import webforge.entry as e; print('graph loaded:', type(e.graph).__name__)"
+
+      - name: Offline tests (pytest) inside the image
+        run: docker run --rm webforge sh -c 'pip install -q pytest && python -m pytest -q'
+
+      - name: UI smoke test on the no-key demo backend
+        run: |
+          mkdir -p logs
+          docker run --rm -v "$PWD/logs:/app/logs" webforge python tools/ui_smoke.py
+
+      - name: docker compose up webforge answers on port 8501 (README step)
+        run: |
+          docker compose up -d webforge
+          for i in $(seq 1 60); do
+            curl -fs http://localhost:8501/_stcore/health && echo " <- webforge healthy" && break
+            sleep 2
+          done
+          curl -fs http://localhost:8501/_stcore/health
+          docker compose logs webforge | tail -20
+          docker compose down
+
+      - name: docker compose up demo answers on port 8501 (README step)
+        run: |
+          docker compose up -d demo
+          for i in $(seq 1 60); do
+            curl -fs http://localhost:8501/_stcore/health && echo " <- demo healthy" && break
+            sleep 2
+          done
+          curl -fs http://localhost:8501/_stcore/health
+          docker compose down
+
+      - name: Keep UI smoke screenshots when something failed
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ui-smoke-logs
+          path: logs/
+          if-no-files-found: ignore

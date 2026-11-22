@@ -1,0 +1,8 @@
+[server]
+# WebForge imports Hugging Face's lazy `transformers` package through the
+# LangChain stack. Streamlit's source watcher probes every lazy model module,
+# which triggers hundreds of optional `torchvision` imports and can keep the
+# app in a non-interactive rerun for minutes. WebForge does not need automatic
+# source watching in normal use; UI interactions and explicit browser refreshes
+# continue to work with the watcher disabled.
+fileWatcherType = "none"

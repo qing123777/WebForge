@@ -1,0 +1,23 @@
+# Only what WebForge imports to run. Each line says who needs it.
+
+# The agents
+langchain>=1.2.7
+langchain-core>=1.2.7
+langchain-openai>=1.1.1          # gpt-5.4, the model every agent runs on
+langgraph>=1.0.3
+langgraph-checkpoint-sqlite      # SqliteSaver: the orchestrator's conversation survives a restart
+deepagents>=0.3.12               # FilesystemMiddleware and the filesystem backends
+langchain-mcp-adapters>=0.1.13   # imported by webforge/core.py
+tavily-python>=0.7.13            # TavilyClient: the Context Engineering Agent's web search
+langsmith>=0.4.43                # tracing, and tools/trace_cost.py / trace_speed.py
+reportlab>=4.0.0                 # imported by webforge/core.py
+python-dotenv>=1.0.0             # reads .env
+pydantic>=2.0                    # spec/schema BaseModels
+beautifulsoup4>=4.14.0           # extract_component + store_test_cases DOM parsing
+
+# Test Execution
+playwright>=1.62.0               # also run: `playwright install chromium`
+psutil                           # kills a hung browser (webforge/test_execution/browser.py)
+
+# The UI
+streamlit

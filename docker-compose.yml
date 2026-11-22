@@ -1,0 +1,30 @@
+services:
+  # The real app. Needs OPENAI_API_KEY and TAVILY_API_KEY in .env (copy .env.example).
+  # Every generate calls the OpenAI API and costs money.
+  webforge:
+    build: .
+    image: webforge
+    ports:
+      - "8501:8501"
+    env_file:
+      - path: .env
+        required: false
+    volumes:
+      # Generated pages land here, so they are visible outside the container.
+      - ./static/preview:/app/static/preview
+
+  # The same Streamlit UI on a scripted backend: no API key, no cost.
+  # It shows the interface and the progress flow, not real generation.
+  demo:
+    image: webforge
+    build: .
+    ports:
+      - "8501:8501"
+    command:
+      - streamlit
+      - run
+      - tools/mock_ui.py
+      - --server.address=0.0.0.0
+      - --server.port=8501
+      - --server.headless=true
+    profiles: ["demo"]
