@@ -229,6 +229,8 @@ fyp.ipynb.bak*
 
 # Generated preview artifacts and episodic memory store
 static/preview/preview_*
+# ...except the demo page the no-key mock backend copies (tools/mock_backend.py)
+!static/preview/preview_demo-*
 fyp_episodes.db
 
 # One-off scratch dumps from earlier debugging sessions

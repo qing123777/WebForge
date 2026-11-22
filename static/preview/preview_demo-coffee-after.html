@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Hearthside Roasters Storefront</title>
+  <link rel="stylesheet" href="preview_demo-coffee-after.css">
+</head>
+<body>
+  <a href="#main-content">Skip to content</a>
+  <header id="header" class="site-header" data-component="navbar">
+    <div>
+      <a href="#promo-banner">Hearthside Roasters</a>
+      <p>Whole bean coffee for home brewers.</p>
+    </div>
+    <nav aria-label="Primary">
+      <ul>
+        <li><a href="#featured-beans">Featured beans</a></li>
+        <li><a href="#materials-and-craft">Craft</a></li>
+        <li><a href="#product-listing">Shop all coffee</a></li>
+      </ul>
+    </nav>
+    <form id="header-search" class="header-search" data-component="search-bar" aria-label="Search coffees">
+      <label for="header-search-input">Search coffees</label>
+      <input id="header-search-input" class="header-search-input" type="search" name="search" placeholder="Search by coffee name, roast level, or tasting note">
+      <button type="submit">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg>
+        <span>Search</span>
+      </button>
+    </form>
+    <button id="header-cart-toggle" class="header-cart-toggle" type="button" aria-label="Open cart drawer" aria-controls="cart-drawer" aria-expanded="false">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M16 10a4 4 0 0 1-8 0"/><path d="M3.103 6.034h17.794"/><path d="M3.4 5.467a2 2 0 0 0-.4 1.2V20a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6.667a2 2 0 0 0-.4-1.2l-2-2.667A2 2 0 0 0 17 2H7a2 2 0 0 0-1.6.8z"/></svg>
+      <span>Cart</span>
+      <span id="header-cart-count" class="header-cart-count" aria-live="polite" data-state="default">3</span>
+    </button>
+  </header>
+
+  <main id="main-content">
+    <section id="promo-banner" class="store-promo-banner" data-component="promo-banner" data-state="default" aria-labelledby="promo-title">
+      <p>Fresh roast drops every week</p>
+      <h1 id="promo-title">Specialty whole bean coffee with tasting notes for every brew ritual.</h1>
+      <p>Browse by roast level, compare flavor profiles, and build a cart of coffees tailored to pour over, drip, espresso, and French press at home.</p>
+      <p><a href="#product-listing">Shop the full coffee collection</a></p>
+    </section>
+
+    <nav id="roast-level-nav" class="roast-level-navigation" aria-label="Browse by roast level">
+      <h2>Browse by roast level</h2>
+      <ul>
+        <li><a id="roast-filter-light" class="roast-filter-light" href="#light-roast" aria-label="Show light roast coffees">Light roast</a></li>
+        <li><a id="roast-filter-medium" class="roast-filter-medium" href="#medium-roast" aria-label="Show medium roast coffees">Medium roast</a></li>
+        <li><a id="roast-filter-dark" class="roast-filter-dark" href="#dark-roast" aria-label="Show dark roast coffees">Dark roast</a></li>
+      </ul>
+    </nav>
+
+    <section id="featured-beans" class="featured-beans-grid" data-component="product-grid" aria-labelledby="featured-title">
+      <div>
+        <p>Featured picks</p>
+        <h2 id="featured-title">Coffee bags our home brewers reach for first</h2>
+      </div>
+      <div>
+        <article class="featured-bean-card" data-component="product-card" data-id="coffee-001">
+          <figure class="featured-bean-image" role="img" aria-label="Dark Tide Ethiopia whole bean coffee bag placeholder">
+            <div class="product-image-placeholder">Dark Tide Ethiopia</div>
+          </figure>
+          <h3>Dark Tide Ethiopia</h3>
+          <p>Single Origin · Hearthside Roasters · Light roast</p>
+          <p>Tasting notes: meyer lemon, jasmine, peach tea</p>
+          <p>Best for: V60, Chemex, AeroPress</p>
+          <p>Bag size: 12 oz</p>
+          <p><span class="featured-bean-price" data-component="product-price">$21.00</span></p>
+          <p>
+            <span class="featured-bean-rating" data-component="product-rating">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/></svg>
+              4.8
+            </span>
+          </p>
+          <button class="featured-bean-add" data-component="add-to-cart-button" type="button" aria-label="Add coffee to cart">Add to cart</button>
+        </article>
+
+        <article class="featured-bean-card" data-component="product-card" data-id="coffee-004">
+          <figure class="featured-bean-image" role="img" aria-label="House Line Blend whole bean coffee bag placeholder">
+            <div class="product-image-placeholder">House Line Blend</div>
+          </figure>
+          <h3>House Line Blend</h3>
+          <p>Blend · Hearthside Roasters · Medium roast</p>
+          <p>Tasting notes: caramel, toasted almond, orange zest</p>
+          <p>Best for: Drip, batch brew, espresso</p>
+          <p>Bag size: 12 oz</p>
+          <p><span class="featured-bean-price" data-component="product-price">$17.00</span></p>
+          <p>
+            <span class="featured-bean-rating" data-component="product-rating">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/></svg>
+              4.9
+            </span>
+          </p>
+          <button class="featured-bean-add" data-component="add-to-cart-button" type="button" aria-label="Add coffee to cart">Add to cart</button>
+        </article>
+
+        <article class="featured-bean-card" data-component="product-card" data-id="coffee-008">
+          <figure class="featured-bean-image" role="img" aria-label="Bloom Kenya whole bean coffee bag placeholder">
+            <div class="product-image-placeholder">Bloom Kenya</div>
+          </figure>
+          <h3>Bloom Kenya</h3>
+          <p>Single Origin · Guest Lot · Light roast</p>
+          <p>Tasting notes: blackcurrant, grapefruit, hibiscus</p>
+          <p>Best for: Pour over, AeroPress, iced filter</p>
+          <p>Bag size: 12 oz</p>
+          <p><span class="featured-bean-price" data-component="product-price">$23.50</span></p>
+          <p>
+            <span class="featured-bean-rating" data-component="product-rating">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/></svg>
+              4.9
+            </span>
+          </p>
+          <button class="featured-bean-add" data-component="add-to-cart-button" type="button" aria-label="Add coffee to cart">Add to cart</button>
+        </article>
+      </div>
+    </section>
+
+    <section id="materials-and-craft" class="materials-craft-content" data-component="hero-section" data-state="default" aria-labelledby="craft-title">
+      <div>
+        <p>Warm minimal roasting philosophy</p>
+        <h2 id="craft-title">Fresh coffee, considered materials, and brew-first details</h2>
+      </div>
+      <div>
+        <section>
+          <h3>Flavor transparency</h3>
+          <p>Every listing calls out roast level, tasting notes, origin, and ideal brew methods so shoppers can choose confidently without decoding jargon.</p>
+        </section>
+        <section>
+          <h3>Home brewer ready</h3>
+          <p>Quick-purchase details like bag size, process, and roast profile are surfaced early for fast comparisons on desktop and mobile.</p>
+        </section>
+        <section>
+          <h3>Low-waste packing</h3>
+          <p>Our coffee ships in compostable high-barrier bags with tin ties to keep beans fresh between morning brews.</p>
+        </section>
+      </div>
+    </section>
+
+    <section id="product-listing" aria-labelledby="listing-title">
+      <div>
+        <h2 id="listing-title">Shop all whole bean coffees</h2>
+        <p>Use the filters to browse by category, price, or brand, then compare tasting notes and roast styles across the full collection.</p>
+      </div>
+
+      <aside id="listing-filter-panel" class="listing-filter-panel" data-component="filter-panel" aria-labelledby="filter-panel-title">
+        <h3 id="filter-panel-title">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M10 20a1 1 0 0 0 .553.895l2 1A1 1 0 0 0 14 21v-7a2 2 0 0 1 .517-1.341L21.74 4.67A1 1 0 0 0 21 3H3a1 1 0 0 0-.742 1.67l7.225 7.989A2 2 0 0 1 10 14z"/></svg>
+          Filter coffees
+        </h3>
+        <form>
+          <p>
+            <label for="filter-category">Category</label>
+            <select id="filter-category" class="filter-category" aria-label="Filter by category">
+              <option id="filter-category-all" value="all">All categories</option>
+              <option id="filter-category-single-origin" value="single-origin">Single Origin</option>
+              <option id="filter-category-blend" value="blend">Blend</option>
+            </select>
+          </p>
+          <p>
+            <label for="filter-price-range">Price range</label>
+            <select id="filter-price-range" class="filter-price-range" aria-label="Filter by price range">
+              <option id="filter-price-all" value="all">All prices</option>
+              <option id="filter-price-under-20" value="under-20">Under $20</option>
+              <option id="filter-price-20-25" value="20-25">$20 to $25</option>
+              <option id="filter-price-over-25" value="over-25">Over $25</option>
+            </select>
+          </p>
+          <p>
+            <label for="filter-brand">Brand</label>
+            <select id="filter-brand" class="filter-brand" aria-label="Filter by brand">
+              <option id="filter-brand-all" value="all">All brands</option>
+              <option id="filter-brand-hearthside" value="hearthside-roasters">Hearthside Roasters</option>
+              <option id="filter-brand-guest" value="guest-lot">Guest Lot</option>
+            </select>
+          </p>
+          <p><button type="submit">Apply filters</button></p>
+        </form>
+      </aside>
+
+      <div id="listing-sort-bar" class="listing-sort-bar" data-component="sort-bar">
+        <p>Listing Meta</p>
+        <p><span id="listing-results-count" class="listing-results-count" aria-live="polite" data-state="default">8</span> coffees available</p>
+        <p>
+          <label for="listing-sort-select">Sort by</label>
+          <select id="listing-sort-select" class="listing-sort-select" aria-label="Sort coffees">
+            <option id="sort-relevance" value="relevance">Relevance</option>
+            <option id="sort-price-asc" value="price-asc">Price: Low to high</option>
+            <option id="sort-price-desc" value="price-desc">Price: High to low</option>
+            <option id="sort-newest" value="newest">Newest arrivals</option>
+          </select>
+        </p>
+      </div>
+
+      <section id="coffee-product-grid" class="coffee-product-grid" data-component="product-grid" aria-label="Product grid">
+        <article id="light-roast" class="coffee-product-card" data-component="product-card" data-id="coffee-001">
+          <figure class="coffee-product-image" role="img" aria-label="Dark Tide Ethiopia whole bean coffee bag placeholder">
+            <div class="product-image-placeholder">Dark Tide Ethiopia</div>
+          </figure>
+          <h3>Dark Tide Ethiopia</h3>
+          <p>Light roast · Single Origin · Hearthside Roasters</p>
+          <p>Origin: Yirgacheffe, Ethiopia</p>
+          <p>Tasting notes: meyer lemon, jasmine, peach tea</p>
+          <p>Process: Washed</p>
+          <p>Bag size: 12 oz</p>
+          <p>Brew methods: V60, Chemex, AeroPress</p>
+          <p><span class="coffee-product-price" data-component="product-price">$21.00</span></p>
+          <p>
+            <span class="coffee-product-rating" data-component="product-rating">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/></svg>
+              4.8
+            </span>
+          </p>
+          <button class="coffee-product-add" data-component="add-to-cart-button" type="button" aria-label="Add coffee to cart">Add to cart</button>
+        </article>
+
+        <article id="medium-roast" class="coffee-product-card" data-component="product-card" data-id="coffee-002">
+          <figure class="coffee-product-image" role="img" aria-label="Red Clay Colombia whole bean coffee bag placeholder">
+            <div class="product-image-placeholder">Red Clay Colombia</div>
+          </figure>
+          <h3>Red Clay Colombia</h3>
+          <p>Medium roast · Single Origin · Hearthside Roasters</p>
+          <p>Origin: Huila, Colombia</p>
+          <p>Tasting notes: red apple, panela, cocoa nib</p>
+          <p>Process: Washed</p>
+          <p>Bag size: 12 oz</p>
+          <p>Brew methods: Drip, Kalita, French press</p>
+          <p><span class="coffee-product-price" data-component="product-price">$19.50</span></p>
+          <p>
+            <span class="coffee-product-rating" data-component="product-rating">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/></svg>
+              4.7
+            </span>
+          </p>
+          <button class="coffee-product-add" data-component="add-to-cart-button" type="button" aria-label="Add coffee to cart">Add to cart</button>
+        </article>
+
+        <article id="dark-roast" class="coffee-product-card" data-component="product-card" data-id="coffee-003">
+          <figure class="coffee-product-image" role="img" aria-label="Night Harbor Sumatra whole bean coffee bag placeholder">
+            <div class="product-image-placeholder">Night Harbor Sumatra</div>
+          </figure>
+          <h3>Night Harbor Sumatra</h3>
+          <p>Dark roast · Single Origin · Hearthside Roasters</p>
+          <p>Origin: Aceh, Sumatra</p>
+          <p>Tasting notes: cedar, baker's chocolate, molasses</p>
+          <p>Process: Wet-hulled</p>
+          <p>Bag size: 12 oz</p>
+          <p>Brew methods: French press, espresso, moka pot</p>
+          <p><span class="coffee-product-price" data-component="product-price">$20.00</span></p>
+          <p>
+            <span class="coffee-product-rating" data-component="product-rating">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/></svg>
+              4.6
+            </span>
+          </p>
+          <button class="coffee-product-add" data-component="add-to-cart-button" type="button" aria-label="Add coffee to cart">Add to cart</button>
+        </article>
+
+        <article class="coffee-product-card" data-component="product-card" data-id="coffee-004">
+          <figure class="coffee-product-image" role="img" aria-label="House Line Blend whole bean coffee bag placeholder">
+            <div class="product-image-placeholder">House Line Blend</div>
+          </figure>
+          <h3>House Line Blend</h3>
+          <p>Medium roast · Blend · Hearthside Roasters</p>
+          <p>Origin: Brazil and Guatemala</p>
+          <p>Tasting notes: caramel, toasted almond, orange zest</p>
+          <p>Process: Mixed washed and natural lots</p>
+          <p>Bag size: 12 oz</p>
+          <p>Brew methods: Drip, batch brew, espresso</p>
+          <p><span class="coffee-product-price" data-component="product-price">$17.00</span></p>
+          <p>
+            <span class="coffee-product-rating" data-component="product-rating">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/></svg>
+              4.9
+            </span>
+          </p>
+          <button class="coffee-product-add" data-component="add-to-cart-button" type="button" aria-label="Add coffee to cart">Add to cart</button>
+        </article>
+
+        <article class="coffee-product-card" data-component="product-card" data-id="coffee-005">
+          <figure class="coffee-product-image" role="img" aria-label="Pine &amp; Cherry Decaf whole bean coffee bag placeholder">
+            <div class="product-image-placeholder">Pine &amp; Cherry Decaf</div>
+          </figure>
+          <h3>Pine &amp; Cherry Decaf</h3>
+          <p>Medium roast · Decaf · Hearthside Roasters</p>
+          <p>Origin: Popayán, Colombia</p>
+          <p>Tasting notes: cherry cola, cacao, walnut</p>
+          <p>Process: EA decaf</p>
+          <p>Bag size: 12 oz</p>
+          <p>Brew methods: Drip, pour over, espresso</p>
+          <p><span class="coffee-product-price" data-component="product-price">$18.50</span></p>
+          <p>
+            <span class="coffee-product-rating" data-component="product-rating">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/></svg>
+              4.5
+            </span>
+          </p>
+          <button class="coffee-product-add" data-component="add-to-cart-button" type="button" aria-label="Add coffee to cart">Add to cart</button>
+        </article>
+
+        <article class="coffee-product-card" data-component="product-card" data-id="coffee-006">
+          <figure class="coffee-product-image" role="img" aria-label="Sun Room Guatemala whole bean coffee bag placeholder">
+            <div class="product-image-placeholder">Sun Room Guatemala</div>
+          </figure>
+          <h3>Sun Room Guatemala</h3>
+          <p>Light roast · Single Origin · Guest Lot</p>
+          <p>Origin: Huehuetenango, Guatemala</p>
+          <p>Tasting notes: pear, honey, chamomile</p>
+          <p>Process: Washed</p>
+          <p>Bag size: 12 oz</p>
+          <p>Brew methods: V60, Origami, AeroPress</p>
+          <p><span class="coffee-product-price" data-component="product-price">$22.00</span></p>
+          <p>
+            <span class="coffee-product-rating" data-component="product-rating">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/></svg>
+              4.8
+            </span>
+          </p>
+          <button class="coffee-product-add" data-component="add-to-cart-button" type="button" aria-label="Add coffee to cart">Add to cart</button>
+        </article>
+
+        <article class="coffee-product-card" data-component="product-card" data-id="coffee-007">
+          <figure class="coffee-product-image" role="img" aria-label="Maple Street Espresso whole bean coffee bag placeholder">
+            <div class="product-image-placeholder">Maple Street Espresso</div>
+          </figure>
+          <h3>Maple Street Espresso</h3>
+          <p>Dark roast · Blend · Hearthside Roasters</p>
+          <p>Origin: Peru and Brazil</p>
+          <p>Tasting notes: brown sugar, bittersweet chocolate, dried fig</p>
+          <p>Process: Seasonal espresso blend</p>
+          <p>Bag size: 12 oz</p>
+          <p>Brew methods: Espresso, moka pot, cappuccino</p>
+          <p><span class="coffee-product-price" data-component="product-price">$18.00</span></p>
+          <p>
+            <span class="coffee-product-rating" data-component="product-rating">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/></svg>
+              4.7
+            </span>
+          </p>
+          <button class="coffee-product-add" data-component="add-to-cart-button" type="button" aria-label="Add coffee to cart">Add to cart</button>
+        </article>
+
+        <article class="coffee-product-card" data-component="product-card" data-id="coffee-008">
+          <figure class="coffee-product-image" role="img" aria-label="Bloom Kenya whole bean coffee bag placeholder">
+            <div class="product-image-placeholder">Bloom Kenya</div>
+          </figure>
+          <h3>Bloom Kenya</h3>
+          <p>Light roast · Single Origin · Guest Lot</p>
+          <p>Origin: Nyeri, Kenya</p>
+          <p>Tasting notes: blackcurrant, grapefruit, hibiscus</p>
+          <p>Process: Washed</p>
+          <p>Bag size: 12 oz</p>
+          <p>Brew methods: Pour over, AeroPress, iced filter</p>
+          <p><span class="coffee-product-price" data-component="product-price">$23.50</span></p>
+          <p>
+            <span class="coffee-product-rating" data-component="product-rating">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/></svg>
+              4.9
+            </span>
+          </p>
+          <button class="coffee-product-add" data-component="add-to-cart-button" type="button" aria-label="Add coffee to cart">Add to cart</button>
+        </article>
+      </section>
+
+      <nav id="listing-pagination" class="listing-pagination" data-component="pagination" aria-label="Coffee listing pages">
+        <ul>
+          <li><a id="pagination-prev" class="pagination-prev" href="#listing-title" aria-label="Previous page of coffees">Previous</a></li>
+          <li><a id="pagination-page-1" class="pagination-page-1" href="#coffee-product-grid" aria-current="page" aria-label="Page 1">1</a></li>
+          <li><a id="pagination-page-2" class="pagination-page-2" href="#listing-pagination" aria-label="Page 2">2</a></li>
+          <li><a id="pagination-next" class="pagination-next" href="#footer" aria-label="Next page of coffees">Next</a></li>
+        </ul>
+      </nav>
+    </section>
+  </main>
+
+  <aside id="cart-drawer" class="cart-drawer-panel" data-component="mini-cart" aria-label="Shopping cart" aria-hidden="true" data-state="closed" hidden>
+    <div>
+      <h2>Your cart</h2>
+      <button id="mini-cart-close" class="mini-cart-close" type="button" aria-label="Close cart drawer">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+      </button>
+    </div>
+    <section id="mini-cart-items" class="mini-cart-items" aria-labelledby="mini-cart-items-title">
+      <h3 id="mini-cart-items-title">Items in cart</h3>
+      <article class="mini-cart-item" data-component="cart-item" data-id="cart-001">
+        <div class="product-image-placeholder">House Line Blend</div>
+        <h4>House Line Blend</h4>
+        <p>12 oz · Medium roast</p>
+        <p><span class="mini-cart-item-price" data-component="product-price">$17.00</span></p>
+        <div class="mini-cart-item-quantity" data-component="quantity-selector">
+          <button class="mini-cart-quantity-decrement" type="button" aria-label="Decrease quantity">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14"/></svg>
+          </button>
+          <span class="mini-cart-quantity-value" aria-live="polite" data-state="default">1</span>
+          <button class="mini-cart-quantity-increment" type="button" aria-label="Increase quantity">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+          </button>
+        </div>
+        <button class="mini-cart-item-remove" type="button" aria-label="Remove item from cart">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M10 11v6"/><path d="M14 11v6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+          Remove
+        </button>
+      </article>
+      <article class="mini-cart-item" data-component="cart-item" data-id="cart-002">
+        <div class="product-image-placeholder">Bloom Kenya</div>
+        <h4>Bloom Kenya</h4>
+        <p>12 oz · Light roast</p>
+        <p><span class="mini-cart-item-price" data-component="product-price">$23.50</span></p>
+        <div class="mini-cart-item-quantity" data-component="quantity-selector">
+          <button class="mini-cart-quantity-decrement" type="button" aria-label="Decrease quantity">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14"/></svg>
+          </button>
+          <span class="mini-cart-quantity-value" aria-live="polite" data-state="default">2</span>
+          <button class="mini-cart-quantity-increment" type="button" aria-label="Increase quantity">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+          </button>
+        </div>
+        <button class="mini-cart-item-remove" type="button" aria-label="Remove item from cart">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M10 11v6"/><path d="M14 11v6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+          Remove
+        </button>
+      </article>
+    </section>
+    <p>Cart Summary</p>
+    <p>Subtotal: <span id="mini-cart-subtotal" class="mini-cart-subtotal" data-component="order-summary" aria-live="polite" data-state="default">$64.00</span></p>
+    <button id="mini-cart-checkout" class="mini-cart-checkout" type="button" aria-label="Proceed to checkout">Proceed to checkout</button>
+  </aside>
+
+  <section id="checkout-flow" class="checkout-panel" hidden>
+    <nav id="checkout-steps" class="checkout-steps" data-component="checkout-steps" data-state="shipping" aria-label="Checkout progress">
+      <ol>
+        <li>Review cart</li>
+        <li>Customer details</li>
+        <li>Review order</li>
+        <li>Payment</li>
+        <li>Order confirmation</li>
+      </ol>
+    </nav>
+
+    <section aria-labelledby="checkout-title">
+      <h2 id="checkout-title">Checkout</h2>
+
+      <section>
+        <h3>
+          <button type="button" aria-expanded="true" aria-controls="checkout-stage-review-cart">1. Review cart</button>
+        </h3>
+        <div id="checkout-stage-review-cart">
+          <p>Guest checkout comes first so returning to your coffee routine is quick.</p>
+          <p><a href="#checkout-flow">Continue as guest</a></p>
+          <p><a href="#checkout-flow">Already have an account? Sign in</a></p>
+        </div>
+      </section>
+
+      <section>
+        <h3>
+          <button type="button" aria-expanded="false" aria-controls="checkout-stage-customer-details">2. Customer details</button>
+        </h3>
+        <div id="checkout-stage-customer-details" hidden>
+          <form id="checkout-form" class="checkout-form" data-component="checkout-form" aria-label="Checkout shipping and contact form">
+            <fieldset>
+              <legend>Customer details</legend>
+              <p>
+                <label for="checkout-email">Email address *</label>
+                <input id="checkout-email" class="checkout-email" type="email" name="email" aria-label="Email address" required>
+              </p>
+              <p>
+                <label for="checkout-full-name">Full name *</label>
+                <input id="checkout-full-name" class="checkout-full-name" type="text" name="fullName" aria-label="Full name" required>
+              </p>
+              <p>
+                <label for="checkout-address">Shipping address *</label>
+                <textarea id="checkout-address" class="checkout-address" name="address" aria-label="Shipping address" required></textarea>
+              </p>
+            </fieldset>
+            <button id="checkout-submit" class="checkout-submit" type="submit" aria-label="Continue to payment">Continue to payment</button>
+          </form>
+        </div>
+      </section>
+
+      <section>
+        <h3>
+          <button type="button" aria-expanded="false" aria-controls="checkout-stage-review-order">3. Review order</button>
+        </h3>
+        <div id="checkout-stage-review-order" hidden>
+          <section id="checkout-order-summary" class="checkout-order-summary" data-component="order-summary" aria-labelledby="checkout-order-summary-title">
+            <h4 id="checkout-order-summary-title">Order summary</h4>
+            <p>Cart Summary</p>
+            <p>Items: 3</p>
+            <p>Total: <span id="checkout-order-total" class="checkout-order-total" aria-live="polite" data-state="default">$70.00</span></p>
+          </section>
+        </div>
+      </section>
+
+      <section>
+        <h3>
+          <button type="button" aria-expanded="false" aria-controls="checkout-stage-payment">4. Payment</button>
+        </h3>
+        <div id="checkout-stage-payment" hidden>
+          <form id="payment-form" class="payment-form" data-component="payment-form" aria-label="Payment form">
+            <fieldset>
+              <legend>Payment details</legend>
+              <p>
+                <label for="payment-card-number">Card number *</label>
+                <input id="payment-card-number" class="payment-card-number" type="text" name="cardNumber" aria-label="Card number" required>
+              </p>
+              <p>
+                <label for="payment-expiry">Expiration date *</label>
+                <input id="payment-expiry" class="payment-expiry" type="text" name="expiry" aria-label="Expiration date" required>
+              </p>
+              <p>
+                <label for="payment-cvc">Security code *</label>
+                <input id="payment-cvc" class="payment-cvc" type="text" name="cvc" aria-label="Security code" required>
+              </p>
+            </fieldset>
+            <button id="payment-submit" class="payment-submit" type="submit" aria-label="Place order">Place order</button>
+          </form>
+        </div>
+      </section>
+
+      <section id="checkout-confirmation" class="checkout-confirmation" data-component="order-confirmation" data-state="hidden" hidden aria-labelledby="confirmation-title">
+        <h3 id="confirmation-title">5. Order confirmation</h3>
+        <p>Thanks for your order. Your next bag of coffee is on the way.</p>
+      </section>
+    </section>
+  </section>
+
+  <footer id="footer" class="site-footer" data-component="footer">
+    <section>
+      <h2>Hearthside Roasters</h2>
+      <p>Thoughtful whole bean coffee for pour over, drip, and espresso at home.</p>
+    </section>
+    <nav aria-label="Footer">
+      <ul>
+        <li><a href="#promo-banner">Back to top</a></li>
+        <li><a href="#featured-beans">Featured coffees</a></li>
+        <li><a href="#product-listing">Shop all</a></li>
+      </ul>
+    </nav>
+    <section>
+      <h2>Support</h2>
+      <ul>
+        <li><a href="mailto:hello@hearthsideroasters.example">hello@hearthsideroasters.example</a></li>
+        <li><a href="tel:+18005550199">(800)&nbsp;555&#8209;0199</a></li>
+      </ul>
+    </section>
+  </footer>
+  <script src="preview_demo-coffee-after.js" defer></script>
+</body>
+</html>
